@@ -2,12 +2,11 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm",
-    "analytics": "3e809df1-df32-47e7-a253-4f6befab9c44"
+    "packageManager": "npm"
   },
   "newProjectRoot": "projects",
   "projects": {
-    "instalacion-angular": {
+    "client": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -62,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "instalacion-angular:build:production"
+              "buildTarget": "client:build:production"
             },
             "development": {
-              "buildTarget": "instalacion-angular:build:development"
+              "buildTarget": "client:build:development"
             }
           },
           "defaultConfiguration": "development"
