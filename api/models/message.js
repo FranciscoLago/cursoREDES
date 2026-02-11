@@ -11,4 +11,4 @@ var MessageSchema = Schema({
     receiver: { type: Schema.ObjectId, ref: 'User' }
 });
 
-exports.Message = mongoose.model('Message', MessageSchema);
+module.exports = mongoose.model('Message', MessageSchema);
