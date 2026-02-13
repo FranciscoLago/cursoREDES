@@ -1,59 +1,85 @@
-# Client
+# NGSOCIAL
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.3.
+Proyecto de red social (MEAN) con autenticacion, perfil de usuario y edicion de datos. Este repo contiene el **frontend Angular**. El **backend Node/Express** corre en un proyecto separado y expone la API REST.
 
-## Development server
+## Stack
 
-To start a local development server, run:
+**Frontend**
+- Angular 21 (standalone components)
+- SSR habilitado
+- Bootstrap 5 + estilos propios
+
+**Backend**
+- Node.js + Express
+- MongoDB + Mongoose
+- JWT para autenticacion
+- Bcrypt para hashing de password
+- Subida de avatar con endpoint dedicado
+
+## Funcionalidades implementadas
+
+**Frontend**
+- Registro y login con validaciones
+- Token e identidad en localStorage (con guardas SSR)
+- Navbar con estado segun autenticacion
+- Dropdown de usuario
+- Home con hero estilizado
+- Perfil: actualizacion de datos + subida de imagen
+
+**Backend**
+- Registro y login
+- Generacion de token JWT
+- Actualizacion de usuario
+- Subida de imagen de perfil
+
+## Requisitos
+
+- Node.js 18+ (recomendado)
+- MongoDB en local o remoto
+
+## Configuracion Backend (resumen)
+
+- API base: `http://localhost:3800/api/`
+- Endpoint login: `POST /login`
+- Endpoint registro: `POST /register`
+- Endpoint update user: `PUT /update-user/:id`
+- Endpoint upload avatar: `POST /upload-image-user/:id`
+
+> Nota: revisa el proyecto backend para variables de entorno y cadena de conexion a MongoDB.
+
+## Frontend - Instalacion
 
 ```bash
-ng serve
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Frontend - Desarrollo
 
 ```bash
-ng generate component component-name
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+La app corre en `http://localhost:4200/`.
+
+## Frontend - Build
 
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
+## Variables / Config
 
-To build the project run:
+- El frontend consume la API en `http://localhost:3800/api/` (ver [src/app/services/global.ts](src/app/services/global.ts)).
 
-```bash
-ng build
-```
+## Rutas principales
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- `/login`
+- `/register`
+- `/home`
+- `/mis-datos`
 
-## Running unit tests
+## Notas
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- El dropdown de usuario se maneja por estado (no JS de Bootstrap).
+- El formulario de perfil usa `NgForm` y fuerza update de UI con `ChangeDetectorRef`.
+- El avatar se sube con `UploadService` y `FormData`.
