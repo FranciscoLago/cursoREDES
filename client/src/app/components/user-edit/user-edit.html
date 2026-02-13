@@ -1,25 +1,22 @@
 <div class="form-container">
     <h1>{{title}}</h1>
-
     @if (status === 'success') {
-    <div class="form-alert form-alert-success">
-        Registro completado correctamente
-        <a [routerLink]="['/login']">Identifícate aquí</a>
+    <div>
+        Se han actualizado tus datos correctamente
     </div>
     }
-
     @if (status === 'error') {
-    <div class="form-alert form-alert-error">
-        Error en el registro, inténtalo de nuevo
+    <div>
+        No se han podido actualizar tus datos
     </div>
     }
 
-    <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+    <form #userEditForm="ngForm" (ngSubmit)="onSubmit()">
         <div class="form-field">
             <label for="name">Nombre</label>
             <input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="user.name" placeholder="Tu nombre"
                 required>
-            @if (name.invalid && name.touched) {
+            @if (!name.valid && name.touched) {
             <span class="form-error">El nombre es obligatorio</span>
             }
         </div>
@@ -28,38 +25,29 @@
             <label for="surname">Apellidos</label>
             <input type="text" id="surname" name="surname" #surname="ngModel" [(ngModel)]="user.surname"
                 placeholder="Tu apellido" required>
-            @if (surname.invalid && surname.touched) {
+            @if (!surname.valid && surname.touched) {
             <span class="form-error">Los apellidos son obligatorios</span>
             }
         </div>
 
         <div class="form-field">
             <label for="nick">Apodo</label>
-            <input type="text" id="nick" name="nick" #nickname="ngModel" [(ngModel)]="user.nick"
+            <input type="text" id="nick" name="nick" #nick="ngModel" [(ngModel)]="user.nick"
                 placeholder="Tu apodo único" required>
-            @if (nickname.invalid && nickname.touched) {
+            @if (!nick.valid && nick.touched) {
             <span class="form-error">El apodo es obligatorio</span>
             }
         </div>
 
         <div class="form-field">
-            <label for="email">Email</label>
+            <label for="email">Correo Electrónico</label>
             <input type="email" id="email" name="email" #email="ngModel" [(ngModel)]="user.email"
                 placeholder="tu@correo.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
-            @if (email.invalid && email.touched) {
+            @if (!email.valid && email.touched) {
             <span class="form-error">El email no es válido</span>
             }
         </div>
 
-        <div class="form-field">
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" #password="ngModel" [(ngModel)]="user.password"
-                placeholder="Contraseña segura" required>
-            @if (password.invalid && password.touched) {
-            <span class="form-error">La contraseña es obligatoria</span>
-            }
-        </div>
-
-        <button type="submit" class="form-submit">{{title}}</button>
+        <button type="submit" class="form-submit" [disabled]="userEditForm.invalid">{{title}}</button>
     </form>
 </div>

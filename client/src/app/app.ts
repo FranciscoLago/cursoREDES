@@ -1,5 +1,5 @@
 import { Component, OnInit, DoCheck, HostListener } from '@angular/core';
-import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterOutlet, RouterLinkActive, ActivatedRoute, Router } from '@angular/router';
 import { UserService } from './services/user.service';
 
 @Component({
@@ -8,15 +8,17 @@ import { UserService } from './services/user.service';
   imports: [RouterLink, RouterOutlet, RouterLinkActive],
   providers: [UserService],
   templateUrl: './app.html',
-  styleUrl: './app.css'
 })
 export class App implements OnInit, DoCheck {
-  public title;
+  public title: string;
   public identity: any;
   public hasIdentity: boolean;
   public isUserMenuOpen: boolean;
 
+
   constructor(
+    private _route: ActivatedRoute,
+    private _router: Router,
     private _userService: UserService,
   ) {
     this.title = "NGSOCIAL";
@@ -54,5 +56,17 @@ export class App implements OnInit, DoCheck {
     }
 
     return !!(identity._id || identity.id || identity.email);
+  }
+
+  logout(): void {
+    localStorage.clear();
+    localStorage.removeItem('identity');
+    localStorage.removeItem('token');
+    this._userService.identity = null;
+    this._userService.token = null;
+    this.identity = this._userService.getIdentity();
+    this.hasIdentity = false;
+
+    this._router.navigate(['/home']);
   }
 }

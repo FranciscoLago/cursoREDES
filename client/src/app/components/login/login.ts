@@ -94,7 +94,7 @@ export class Login implements OnInit {
 
                     //consegior los contadores o estadisticas del usuario
                     setTimeout(() => {
-                        this._router.navigate(['/home']);
+                        this.getCounters();
                     }, 500);
 
                 }
@@ -107,6 +107,19 @@ export class Login implements OnInit {
                     this.status = 'error';
                     this.cdr.detectChanges();
                 }
+            }
+        })
+    }
+
+    getCounters() {
+        this._userService.getCounters().subscribe({
+            next: response => {
+                localStorage.setItem('stats', JSON.stringify(response));
+                this._router.navigate(['/home']);
+
+            },
+            error: error => {
+                console.log(<any>error);
             }
         })
     }

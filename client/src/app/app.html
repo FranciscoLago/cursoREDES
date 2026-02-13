@@ -22,19 +22,6 @@
             Gente
           </a>
         </li>
-        } @else {
-        <li class="nav-item">
-          <a routerLink="/login" routerLinkActive="active" class="nav-link">
-            <i class="bi bi-box-arrow-in-right"></i>
-            Login
-          </a>
-        </li>
-        <li class="nav-item style">
-          <a routerLink="/register" routerLinkActive="active" class="nav-link">
-            <i class="bi bi-person-plus"></i>
-            Registro
-          </a>
-        </li>
         }
       </ul>
       @if (hasIdentity) {
@@ -55,18 +42,33 @@
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" routerLink="/mis-datos">
                 <span class="bi bi-person-lines-fill"></span>
                 Mis datos
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">
+              <button class="dropdown-item" type="button" (click)="logout()">
                 <span class="bi bi-box-arrow-right"></span>
                 Cerrar sesión
-              </a>
+              </button>
             </li>
           </ul>
+        </li>
+      </ul>
+      } @else {
+      <ul class="navbar-nav navbar-right user-nav">
+        <li class="nav-item">
+          <a routerLink="/login" routerLinkActive="active" class="nav-link">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Login
+          </a>
+        </li>
+        <li class="nav-item style">
+          <a routerLink="/register" routerLinkActive="active" class="nav-link">
+            <i class="bi bi-person-plus"></i>
+            Registro
+          </a>
         </li>
       </ul>
       }

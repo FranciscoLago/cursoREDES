@@ -10,6 +10,7 @@ export class UserService {
     public url: string;
     public identity: any;
     public token: any;
+    public stats: any;
 
     constructor(
         public _http: HttpClient,
@@ -48,6 +49,12 @@ export class UserService {
         }
 
         let identity = JSON.parse(storedIdentity);
+
+        // Mapear _id de MongoDB a id del modelo User
+        if (identity._id && !identity.id) {
+            identity.id = identity._id;
+        }
+
         this.identity = identity;
 
         return this.identity;
@@ -67,6 +74,34 @@ export class UserService {
         }
 
         return this.token;
+    }
+
+    getStats(): Observable<any> {
+        let stats = JSON.parse(localStorage.getItem('stats') || '{}');
+
+        if (stats != "undefined") {
+            this.stats = stats
+        } else {
+            this.stats = null;
+        } return this.stats;
+    }
+
+    getCounters(userId = null): Observable<any> {
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', this.getToken() || '');
+
+        if (userId != null) {
+            return this._http.get(this.url + 'counters/' + userId, { headers: headers });
+        } else {
+            return this._http.get(this.url + 'counters', { headers: headers });
+        }
+    }
+
+    updateUser(user: User): Observable<any> {
+        let params = JSON.stringify(user);
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', this.getToken() || '');
+
+        return this._http.put(this.url + 'update-user/' + user.id, params, { headers: headers });
+
     }
 
 }
