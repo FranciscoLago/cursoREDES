@@ -28,6 +28,10 @@
       <ul class="navbar-nav navbar-right user-nav">
         <li class="avatar">
           <!--Si el usuario tiene una imagen de perfil, mostrarla, de lo contrario mostrar un avatar genérico-->
+          @if (identity && identity.image) {
+          <img src="{{url + 'get-image-user/' + identity.image}}" alt="">
+          }
+
         </li>
         <li class="nav-item dropdown" [class.show]="isUserMenuOpen">
           <button class="nav-link dropdown-toggle" id="userMenu" type="button" [attr.aria-expanded]="isUserMenuOpen"

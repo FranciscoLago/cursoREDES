@@ -1,6 +1,7 @@
 import { Component, OnInit, DoCheck, HostListener } from '@angular/core';
 import { RouterLink, RouterOutlet, RouterLinkActive, ActivatedRoute, Router } from '@angular/router';
 import { UserService } from './services/user.service';
+import { GLOBAL } from './services/global';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class App implements OnInit, DoCheck {
   public identity: any;
   public hasIdentity: boolean;
   public isUserMenuOpen: boolean;
+  public url: string;
 
 
   constructor(
@@ -24,6 +26,7 @@ export class App implements OnInit, DoCheck {
     this.title = "NGSOCIAL";
     this.hasIdentity = false;
     this.isUserMenuOpen = false;
+    this.url = GLOBAL.url;
 
   }
 

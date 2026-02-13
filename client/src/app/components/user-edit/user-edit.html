@@ -11,7 +11,7 @@
     </div>
     }
 
-    <form #userEditForm="ngForm" (ngSubmit)="onSubmit()">
+    <form #userEditForm="ngForm" (ngSubmit)="onSubmit(userEditForm)">
         <div class="form-field">
             <label for="name">Nombre</label>
             <input type="text" id="name" name="name" #name="ngModel" [(ngModel)]="user.name" placeholder="Tu nombre"
@@ -46,6 +46,19 @@
             @if (!email.valid && email.touched) {
             <span class="form-error">El email no es válido</span>
             }
+        </div>
+
+        @if (user.image) {
+        <div>
+            <img src="{{url + 'get-image-user/' + user.image}}" alt="foto usuario" width="200" height="200">
+
+        </div>
+
+        }
+
+        <div class="form-field">
+            <label for="avatar">Sube tu avatar</label>
+            <input type="file" placeholder="Subir imagen" (change)="fileChangeEvent($event)">
         </div>
 
         <button type="submit" class="form-submit" [disabled]="userEditForm.invalid">{{title}}</button>

@@ -11,6 +11,7 @@ var jwt = require('../services/jwt');
 var Follow = require('../models/follow');
 var Publication = require('../models/publication');
 const { count } = require('console');
+const user = require('../models/user');
 
 
 // metodos de prueba
@@ -270,28 +271,31 @@ function updateUser(req, res) {
     if (userId !== req.user.sub) {
         return res.status(500).send({ message: 'No tienes permiso para actualizar este usuario' });
     }
-    User.findOne({
+    User.find({
         $or: [
             { email: update.email.toLowerCase() },
-            { nick: update.nick.toLowerCase() }]
+            { nick: update.nick.toLowerCase() }
+        ]
     }).exec()
         .then((users) => {
-            if (users._id != userId) {
+            // Check if another user (not the current one) already uses the email or nick.
+            var user_isset = users && users.some((u) => u._id.toString() !== userId);
+
+            if (user_isset) {
                 return res.status(500).send({ message: 'Los datos ya estan en uso' });
-            } else {
-
-                User.findByIdAndUpdate(userId, update, { new: true }).exec()
-                    .then((userUpdated) => {
-                        if (!userUpdated) {
-                            return res.status(404).send({ message: 'No se ha podido actualizar el usuario' });
-                        }
-
-                        return res.status(200).send({ user: userUpdated });
-                    })
-                    .catch(() => res.status(500).send({ message: 'Error en la peticion' }));
-
             }
-        }).catch(() => res.status(500).send({ message: 'Error en la peticion' }));
+
+            User.findByIdAndUpdate(userId, update, { new: true }).exec()
+                .then((userUpdated) => {
+                    if (!userUpdated) {
+                        return res.status(404).send({ message: 'No se ha podido actualizar el usuario' });
+                    }
+
+                    return res.status(200).send({ user: userUpdated });
+                })
+                .catch(() => res.status(500).send({ message: 'Error en la peticion' }));
+        })
+        .catch(() => res.status(500).send({ message: 'Error en la peticion' }));
 
 }
 
