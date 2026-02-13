@@ -270,16 +270,28 @@ function updateUser(req, res) {
     if (userId !== req.user.sub) {
         return res.status(500).send({ message: 'No tienes permiso para actualizar este usuario' });
     }
+    User.findOne({
+        $or: [
+            { email: update.email.toLowerCase() },
+            { nick: update.nick.toLowerCase() }]
+    }).exec()
+        .then((users) => {
+            if (users._id != userId) {
+                return res.status(500).send({ message: 'Los datos ya estan en uso' });
+            } else {
 
-    User.findByIdAndUpdate(userId, update, { new: true }).exec()
-        .then((userUpdated) => {
-            if (!userUpdated) {
-                return res.status(404).send({ message: 'No se ha podido actualizar el usuario' });
+                User.findByIdAndUpdate(userId, update, { new: true }).exec()
+                    .then((userUpdated) => {
+                        if (!userUpdated) {
+                            return res.status(404).send({ message: 'No se ha podido actualizar el usuario' });
+                        }
+
+                        return res.status(200).send({ user: userUpdated });
+                    })
+                    .catch(() => res.status(500).send({ message: 'Error en la peticion' }));
+
             }
-
-            return res.status(200).send({ user: userUpdated });
-        })
-        .catch(() => res.status(500).send({ message: 'Error en la peticion' }));
+        }).catch(() => res.status(500).send({ message: 'Error en la peticion' }));
 
 }
 
