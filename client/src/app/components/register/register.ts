@@ -7,7 +7,6 @@ import { UserService } from "../../services/user.service";
 @Component({
     selector: 'app-register',
     templateUrl: './register.html',
-    styleUrls: ['./register.css'],
     standalone: true,
     imports: [FormsModule, RouterLink],
     providers: [UserService]
@@ -33,7 +32,7 @@ export class Register implements OnInit {
 
 
     ngOnInit(): void {
-        console.log("Register component cargado");
+        //console.log('register.component cargado');
     }
 
     onSubmit(form: NgForm): void {
@@ -49,8 +48,12 @@ export class Register implements OnInit {
                 if (response.user && response.user._id) {
                     //console.log(response.user)
                     this.status = 'success';
+                    this.cdr.detectChanges();
+                    setTimeout(() => {
+                        this._router.navigate(['/home']);
+                    }, 500);
                     form.reset();
-                }else{
+                } else {
                     this.status = 'error';
                 }
                 this.cdr.detectChanges();

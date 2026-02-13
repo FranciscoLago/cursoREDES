@@ -1,17 +1,17 @@
 <div class="navigation col-lg-12">
-  <nav class="navbar navbar-expand-lg" style="background-color: wheat; border-bottom: 1px solid #3f0b3542;">
+  <nav class="navbar navbar-expand-lg app-navbar">
     <div class="container-fluid">
-      <a href="#" class="navbar-brand fw-bold" style="font-size: 1.5rem; color: #3f0b35;">{{title}}</a>
+      <a routerLink="/home" class="navbar-brand app-brand">{{title}}</a>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         @if (hasIdentity) {
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a routerLink="/home" routerLinkActive="active" class="nav-link">
             <i class="bi bi-house-door"></i>
             Inicio
           </a>
         </li>
         <li class="nav-item style">
-          <a href="#" class="nav-link">
+          <a routerLink="/timeline" routerLinkActive="active" class="nav-link">
             <i class="bi bi-clock"></i>
             Timeline
           </a>
@@ -37,6 +37,39 @@
         </li>
         }
       </ul>
+      @if (hasIdentity) {
+      <ul class="navbar-nav navbar-right user-nav">
+        <li class="avatar">
+          <!--Si el usuario tiene una imagen de perfil, mostrarla, de lo contrario mostrar un avatar genérico-->
+        </li>
+        <li class="nav-item dropdown" [class.show]="isUserMenuOpen">
+          <button class="nav-link dropdown-toggle" id="userMenu" type="button" [attr.aria-expanded]="isUserMenuOpen"
+            (click)="toggleUserMenu($event)">
+            {{ identity.nick }} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu" [class.show]="isUserMenuOpen">
+            <li>
+              <a class="dropdown-item" href="#">
+                <span class="bi bi-person"></span>
+                Mi perfil
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">
+                <span class="bi bi-person-lines-fill"></span>
+                Mis datos
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">
+                <span class="bi bi-box-arrow-right"></span>
+                Cerrar sesión
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      }
     </div>
   </nav>
 </div>

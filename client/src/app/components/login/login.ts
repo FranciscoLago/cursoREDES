@@ -7,7 +7,6 @@ import { UserService } from "../../services/user.service";
 @Component({
     selector: 'app-login',
     templateUrl: './login.html',
-    styleUrls: ['./login.css'],
     standalone: true,
     imports: [FormsModule],
     providers: [UserService]
@@ -32,23 +31,36 @@ export class Login implements OnInit {
 
 
     ngOnInit(): void {
-        console.log("Login component cargado");
+        //algo tendre q poner aqui
     }
 
     onSubmit(form: NgForm) {
+        form.form.markAllAsTouched();
+        form.form.updateValueAndValidity();
+        if (form.invalid) {
+            return;
+        }
+
+        const loginData = {
+            email: this.user.email,
+            password: this.user.password
+        };
+
         // Loguear al usuario y obtener el token
-        this._userService.signup(this.user).subscribe({
+        this._userService.signup(loginData).subscribe({
             next: response => {
                 this.identity = response.user;
                 if (!this.identity || !this.identity._id) {
                     this.status = 'error';
+                    this.cdr.detectChanges();
 
                 } else {
                     this.status = 'success';
+                    this.cdr.detectChanges();
                     // PERSISTIR DATOS DEL USUARIO IDENTIFICADO
                     localStorage.setItem('identity', JSON.stringify(this.identity));
                     // Obtener el token
-                    this.getToken();
+                    this.getToken(loginData);
                 }
             },
             error: error => {
@@ -57,27 +69,33 @@ export class Login implements OnInit {
 
                 if (errorMessage != null) {
                     this.status = 'error';
+                    this.cdr.detectChanges();
                 }
             }
         })
     }
 
-    getToken() {
+    getToken(loginData?: { email: string; password: string }) {
+        const data = loginData ?? this.user;
         // Loguear al usuario y obtener el token
-        this._userService.signup(this.user, true).subscribe({
+        this._userService.signup(data, true).subscribe({
             next: response => {
                 this.token = response.token;
                 if (this.token.length <= 0) {
                     this.status = 'error';
+                    this.cdr.detectChanges();
 
                 } else {
                     this.status = 'success';
+                    this.cdr.detectChanges();
                     // PERSISTIR DATOS DEL USUARIO IDENTIFICADO
                     localStorage.setItem('token', this.token);
                     localStorage.setItem('identity', JSON.stringify(this.identity));
 
                     //consegior los contadores o estadisticas del usuario
-                    this._router.navigate(['/']);
+                    setTimeout(() => {
+                        this._router.navigate(['/home']);
+                    }, 500);
 
                 }
             },
@@ -87,6 +105,7 @@ export class Login implements OnInit {
 
                 if (errorMessage != null) {
                     this.status = 'error';
+                    this.cdr.detectChanges();
                 }
             }
         })

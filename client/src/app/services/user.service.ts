@@ -24,7 +24,7 @@ export class UserService {
         return this._http.post(this.url + 'register', json, { headers: headers });
     }
 
-    signup(user: User, gettoken: boolean | null = null): Observable<any> {
+    signup(user: User | { email: string; password: string; gettoken?: string }, gettoken: boolean | null = null): Observable<any> {
         if (gettoken != null) {
             user.gettoken = 'true';
         }
