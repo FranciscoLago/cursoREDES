@@ -193,7 +193,7 @@ function getUsers(req, res) {
     var page = parseInt(req.params.page, 10) || 1;
     if (page < 1) page = 1;
 
-    var itemsPerPage = 5;
+    var itemsPerPage = 6;
 
     Promise.all([
         User.find()

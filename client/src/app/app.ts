@@ -3,6 +3,7 @@ import { RouterLink, RouterOutlet, RouterLinkActive, ActivatedRoute, Router } fr
 import { UserService } from './services/user.service';
 import { GLOBAL } from './services/global';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,

@@ -1,7 +1,7 @@
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from "@angular/common";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { User } from "../models/user";
 import { GLOBAL } from "./global";
 
@@ -11,6 +11,7 @@ export class UserService {
     public identity: any;
     public token: any;
     public stats: any;
+    public statsSubject: BehaviorSubject<any> = new BehaviorSubject({});
 
     constructor(
         public _http: HttpClient,
@@ -92,7 +93,18 @@ export class UserService {
         if (userId != null) {
             return this._http.get(this.url + 'counters/' + userId, { headers: headers });
         } else {
-            return this._http.get(this.url + 'counters', { headers: headers });
+            return new Observable(observer => {
+                this._http.get(this.url + 'counters', { headers: headers }).subscribe({
+                    next: (response: any) => {
+                        this.statsSubject.next(response);
+                        observer.next(response);
+                        observer.complete();
+                    },
+                    error: (error) => {
+                        observer.error(error);
+                    }
+                });
+            });
         }
     }
 
@@ -102,6 +114,19 @@ export class UserService {
 
         return this._http.put(this.url + 'update-user/' + user.id, params, { headers: headers });
 
+    }
+
+    getUsers(page: number): Observable<any> {
+        let headers = new HttpHeaders().set('Content-Type', 'application/json')
+            .set('Authorization', this.getToken() || '');
+
+        return this._http.get(this.url + 'users/' + page, { headers: headers });
+    }
+
+    getUser(id: string): Observable<any> {
+        let headers = new HttpHeaders().set('Content-Type', 'application/json')
+            .set('Authorization', this.getToken() || '');
+        return this._http.get(this.url + 'user/' + id, { headers: headers });
     }
 
 }

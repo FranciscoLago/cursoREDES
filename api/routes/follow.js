@@ -5,8 +5,9 @@ var FollowController = require('../controllers/follow'); // Carga el controlador
 var api = express.Router(); // Crea el router de express para configurar las rutas
 var md_auth = require('../middlewares/authenticated'); // Carga el middleware de autenticacion
 
-api.post('/follow', md_auth.ensureAuth, FollowController.saveFollow); 
+api.post('/follow', md_auth.ensureAuth, FollowController.saveFollow);
 api.delete('/follow/:id', md_auth.ensureAuth, FollowController.deleteFollow);
+api.delete('/unfollow/:id', md_auth.ensureAuth, FollowController.deleteFollow);
 api.get('/following/:id/:page', md_auth.ensureAuth, FollowController.getFollowingUsers);
 api.get('/followed/:id/:page', md_auth.ensureAuth, FollowController.getFollowedUsers);
 api.get('/get-my-follows/:followed', md_auth.ensureAuth, FollowController.getMyFollows);

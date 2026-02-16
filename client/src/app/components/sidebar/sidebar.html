@@ -1,0 +1,36 @@
+<div class="sidebar-shell">
+    <div class="sidebar-card">
+        <div class="sidebar-avatar">
+            @if (identity.image) {
+            <img src="{{url + 'get-image-user/' + identity.image}}" alt="{{identity.name}}">
+            }
+            @if (!identity.image) {
+            <div class="sidebar-avatar-fallback">
+                {{identity.name.charAt(0)}}{{identity.surname.charAt(0)}}
+            </div>
+            }
+        </div>
+
+        <div class="sidebar-info">
+            <h3 class="sidebar-name">{{identity.name}} {{identity.surname}}</h3>
+            <p class="sidebar-nick">@{{identity.nick}}</p>
+        </div>
+
+        @if (stats) {
+        <div class="sidebar-stats">
+            <div class="sidebar-stat">
+                <span class="sidebar-stat-label">Siguiendo</span>
+                <span class="sidebar-stat-number">{{stats.following}}</span>
+            </div>
+            <div class="sidebar-stat">
+                <span class="sidebar-stat-label">Seguidores</span>
+                <span class="sidebar-stat-number">{{stats.followed}}</span>
+            </div>
+            <div class="sidebar-stat">
+                <span class="sidebar-stat-label">Publicaciones</span>
+                <span class="sidebar-stat-number">{{stats.publications}}</span>
+            </div>
+        </div>
+        }
+    </div>
+</div>
