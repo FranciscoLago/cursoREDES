@@ -1,19 +1,21 @@
 <div class="sidebar-shell">
     <div class="sidebar-card">
-        <div class="sidebar-avatar">
-            @if (identity.image) {
-            <img src="{{url + 'get-image-user/' + identity.image}}" alt="{{identity.name}}">
-            }
-            @if (!identity.image) {
-            <div class="sidebar-avatar-fallback">
-                {{identity.name.charAt(0)}}{{identity.surname.charAt(0)}}
+        <div class="sidebar-header">
+            <div class="sidebar-avatar">
+                @if (identity.image) {
+                <img src="{{url + 'get-image-user/' + identity.image}}" alt="{{identity.name}}">
+                }
+                @if (!identity.image) {
+                <div class="sidebar-avatar-fallback">
+                    {{identity.name.charAt(0)}}{{identity.surname.charAt(0)}}
+                </div>
+                }
             </div>
-            }
-        </div>
 
-        <div class="sidebar-info">
-            <h3 class="sidebar-name">{{identity.name}} {{identity.surname}}</h3>
-            <p class="sidebar-nick">@{{identity.nick}}</p>
+            <div class="sidebar-info">
+                <h3 class="sidebar-name">{{identity.name}} {{identity.surname}}</h3>
+                <p class="sidebar-nick">@{{identity.nick}}</p>
+            </div>
         </div>
 
         @if (stats) {
@@ -32,5 +34,31 @@
             </div>
         </div>
         }
+    </div>
+</div>
+
+<!-- Formulario de publicaciones -->
+
+<div class="sidebar-shell">
+    <div class="sidebar-card">
+        <div id="new-publication">
+            <form #newPubForm="ngForm" (ngSubmit)="onSubmit()">
+                <p>
+                    <label>Que estas pensando?</label>
+                    <textarea name="text" id="text" [(ngModel)]="publication.text" class="form-control"
+                        required></textarea>
+                    @if (!newPubForm.form.controls['text']?.valid && newPubForm.form.controls['text']?.touched) {
+                    <span class="error">El texto es obligatorio</span>
+                    }
+
+                </p>
+
+                <p>
+                    <label>Sube tu foto</label>
+                    <input type="file" placeholder="Subir imagen">
+                </p>
+                <input type="submit" value="Enviar" class="btn btn-success" [disabled]="!newPubForm.form.valid">
+            </form>
+        </div>
     </div>
 </div>

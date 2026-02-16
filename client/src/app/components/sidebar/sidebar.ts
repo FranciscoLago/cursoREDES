@@ -1,12 +1,15 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { GLOBAL } from '../../services/global';
 import { Subscription } from 'rxjs';
+import { Publication } from '../../models/publication';
 
 @Component({
     selector: 'sidebar',
     templateUrl: './sidebar.html',
-    standalone: true
+    standalone: true,
+    imports: [FormsModule]
 })
 export class Sidebar implements OnInit, OnDestroy {
     public identity: any;
@@ -15,6 +18,7 @@ export class Sidebar implements OnInit, OnDestroy {
     public status: string;
     public url: string;
     private statsSubscription: Subscription | null = null;
+    public publication: Publication;
 
 
     constructor(
@@ -26,6 +30,7 @@ export class Sidebar implements OnInit, OnDestroy {
         this.url = GLOBAL.url;
         this.stats = {};
         this.status = "";
+        this.publication = new Publication("", "", "", "", this.identity.id);
     }
 
     ngOnInit(): void {
@@ -57,6 +62,10 @@ export class Sidebar implements OnInit, OnDestroy {
         if (this.statsSubscription) {
             this.statsSubscription.unsubscribe();
         }
+    }
+
+    onSubmit(): void {
+        console.log(this.publication);
     }
 
 }
