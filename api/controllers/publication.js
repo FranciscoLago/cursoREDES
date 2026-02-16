@@ -46,15 +46,11 @@ function getPublications(req, res) {
 
     var itemsPerPage = 4;
 
-    Promise.all([
-        Follow.find({ user: req.user.sub })
-            .skip((page - 1) * itemsPerPage)
-            .limit(itemsPerPage)
-            .populate('followed')
-            .exec(),
-        Follow.countDocuments({ user: req.user.sub }).exec()
-    ])
-        .then(([follows]) => {
+    // Obtener TODOS los follows del usuario (sin paginar)
+    Follow.find({ user: req.user.sub })
+        .populate('followed')
+        .exec()
+        .then((follows) => {
             var follows_clean = [];
 
             follows.forEach((follow) => {
@@ -131,7 +127,7 @@ function uploadImage(req, res) {
 
     if (req.files) {
         var file_path = req.files.image.path;
-        var file_split = file_path.split('\\');  
+        var file_split = file_path.split('\\');
         var file_name = file_split[file_split.length - 1];
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[ext_split.length - 1];
