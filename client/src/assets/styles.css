@@ -87,7 +87,7 @@ body {
     height: 35px;
     border-radius: 100px;
     overflow: hidden;
-    margin-top: 9px;
+    margin-top: 5px;
     margin-right: 2px;
 }
 
@@ -115,7 +115,9 @@ body {
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding: 16px 16px 40px;
+    padding: 16px 32px 40px;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
 .home-hero {
@@ -300,8 +302,11 @@ body {
 .users-container {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 570px;
-    gap: 24px;
+    gap: 38px;
     align-items: flex-start;
+    padding: 0 10px;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
 .users-main {
@@ -704,6 +709,11 @@ body {
 @media (max-width: 768px) {
     .users-container {
         grid-template-columns: 1fr;
+        padding: 0 16px;
+    }
+
+    .home-shell {
+        padding: 16px 16px 40px;
     }
 
     .sidebar-shell {
@@ -711,3 +721,7 @@ body {
         top: auto;
     }
 }
+
+
+
+/* Timeline */

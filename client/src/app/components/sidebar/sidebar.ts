@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service';
 import { GLOBAL } from '../../services/global';
 import { Subscription } from 'rxjs';
 import { Publication } from '../../models/publication';
+import { PublicationService } from '../../services/publication';
 
 @Component({
     selector: 'sidebar',
@@ -23,7 +24,9 @@ export class Sidebar implements OnInit, OnDestroy {
 
     constructor(
         private _userService: UserService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private _publicationService: PublicationService
+
     ) {
         this.identity = this._userService.getIdentity();
         this.token = this._userService.getToken();
@@ -64,8 +67,22 @@ export class Sidebar implements OnInit, OnDestroy {
         }
     }
 
-    onSubmit(): void {
-        console.log(this.publication);
+    onSubmit(form: any): void {
+        this._publicationService.addPublication(this.token, this.publication).subscribe({
+            next: (response: any) => {
+                if (response.publication) {
+                    //this.publication = response.publication;
+                    form.reset();
+                    this.status = "success";
+                    this.cdr.detectChanges();
+                } else {
+                    this.status = "error";
+                }
+            },
+            error: (error: any) => {
+                console.error('Error creando publication:', error);
+            }
+        });
     }
 
 }

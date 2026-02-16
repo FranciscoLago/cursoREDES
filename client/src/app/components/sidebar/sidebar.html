@@ -42,7 +42,22 @@
 <div class="sidebar-shell">
     <div class="sidebar-card">
         <div id="new-publication">
-            <form #newPubForm="ngForm" (ngSubmit)="onSubmit()">
+            @if (status === "success") {
+
+            <div class="alert alert-success">
+                Publicación creada correctamente.
+            </div>
+
+            }
+
+            @if (status === "error") {
+            <div class="alert alert-danger">
+                Error al crear la publicación. Por favor, inténtalo de nuevo.
+            </div>
+            }
+
+
+            <form #newPubForm="ngForm" (ngSubmit)="onSubmit(newPubForm)">
                 <p>
                     <label>Que estas pensando?</label>
                     <textarea name="text" id="text" [(ngModel)]="publication.text" class="form-control"
