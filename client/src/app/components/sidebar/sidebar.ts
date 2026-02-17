@@ -5,12 +5,14 @@ import { GLOBAL } from '../../services/global';
 import { Subscription } from 'rxjs';
 import { Publication } from '../../models/publication';
 import { PublicationService } from '../../services/publication';
+import { UploadService } from '../../services/upload.service';
 
 @Component({
     selector: 'sidebar',
     templateUrl: './sidebar.html',
     standalone: true,
-    imports: [FormsModule]
+    imports: [FormsModule],
+    providers: [UploadService]
 })
 export class Sidebar implements OnInit, OnDestroy {
     public identity: any;
@@ -20,12 +22,14 @@ export class Sidebar implements OnInit, OnDestroy {
     public url: string;
     private statsSubscription: Subscription | null = null;
     public publication: Publication;
+    public filesToUpload: Array<File> = [];
 
 
     constructor(
         private _userService: UserService,
         private cdr: ChangeDetectorRef,
-        private _publicationService: PublicationService
+        private _publicationService: PublicationService,
+        private _uploadService: UploadService
 
     ) {
         this.identity = this._userService.getIdentity();
@@ -71,10 +75,29 @@ export class Sidebar implements OnInit, OnDestroy {
         this._publicationService.addPublication(this.token, this.publication).subscribe({
             next: (response: any) => {
                 if (response.publication) {
-                    //this.publication = response.publication;
-                    form.reset();
-                    this.status = "success";
-                    this.cdr.detectChanges();
+                    const publicationId = response.publication._id || response.publication.id;
+
+                    if (this.filesToUpload.length > 0 && publicationId) {
+                        this._uploadService.makeFileRequest(
+                            this._uploadService.url + 'upload-image-pub/' + publicationId,
+                            [],
+                            this.filesToUpload,
+                            'image'
+                        ).then(() => {
+                            this.status = "success";
+                            this.filesToUpload = [];
+                            form.reset();
+                            this.cdr.detectChanges();
+                        }).catch((error: any) => {
+                            console.error('Error subiendo imagen:', error);
+                            this.status = "error";
+                            this.cdr.detectChanges();
+                        });
+                    } else {
+                        this.status = "success";
+                        form.reset();
+                        this.cdr.detectChanges();
+                    }
                 } else {
                     this.status = "error";
                 }
@@ -83,6 +106,10 @@ export class Sidebar implements OnInit, OnDestroy {
                 console.error('Error creando publication:', error);
             }
         });
+    }
+
+    fileChangeEvent(fileInput: any) {
+        this.filesToUpload = <Array<File>>fileInput.target.files;
     }
 
 }

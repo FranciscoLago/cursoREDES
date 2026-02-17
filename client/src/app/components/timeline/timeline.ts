@@ -6,12 +6,14 @@ import { ChangeDetectorRef } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { Sidebar } from "../sidebar/sidebar";
 import { PublicationService } from "../../services/publication";
+import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
+import { DatePipe } from "@angular/common";
 
 @Component({
     selector: "timeline",
     templateUrl: "./timeline.html",
     standalone: true,
-    imports: [Sidebar]
+    imports: [Sidebar, TimeAgoPipe, DatePipe]
 })
 export class TimelineComponent implements OnInit {
     public title: string;
@@ -22,6 +24,7 @@ export class TimelineComponent implements OnInit {
     public page: number;
     public total: number;
     public pages: number;
+    public itemPerPage: number;
     public publications: Publication[];
 
     constructor(
@@ -39,6 +42,7 @@ export class TimelineComponent implements OnInit {
         this.page = 1;
         this.total = 0;
         this.pages = 0;
+        this.itemPerPage = 0;
         this.publications = [];
     }
 
@@ -47,16 +51,34 @@ export class TimelineComponent implements OnInit {
         this.getPublications(1);
     }
 
-    getPublications(page: number): void {
+    getPublications(page: number, adding = false): void {
+        if (!adding) {
+            this.noMore = false;
+        }
         this._publicationService.getPublications(this.token!, page).subscribe({
             next: (response) => {
                 if (response.publications) {
-                    this.publications = response.publications;
                     this.total = response.total;
                     this.pages = response.pages;
+                    this.itemPerPage = response.items_per_page;
                     this.page = page;
+
+                    if (!adding) {
+                        this.publications = response.publications;
+                    } else {
+                        var arrayA = this.publications;
+                        var arrayB = response.publications;
+                        this.publications = arrayA.concat(arrayB);
+
+                        $('html, body').animate({ scrollTop: $('html').prop("scrollHeight") }, 300);
+                    }
+
+                    const lastPageByTotal = this.total > 0 && this.publications.length >= this.total;
+                    const lastPageBySize = response.publications.length < this.itemPerPage;
+                    this.noMore = this.total === 0 || lastPageByTotal || lastPageBySize;
+
                     if (page > this.pages) {
-                        this._router.navigate(['/home']);
+                        //this._router.navigate(['/home']);
                     }
                     this.status = "success";
                     console.log('Publications loaded:', this.publications);
