@@ -70,10 +70,49 @@ export class TimelineComponent implements OnInit {
             }
         });
     }
+    public noMore = false;
+    viewMore(): void {
+        if (this.noMore) {
+            return;
+        }
+        if (this.publications.length == this.total) {
+            this.noMore = true;
+        } else {
+            this.page += 1;
+            this.getPublications(this.page, true);
+        }
+    }
 
     handlePublicationImageError(event: Event): void {
         const img = event.target as HTMLImageElement;
         img.style.display = 'none';
     }
 
+    parseCreatedAt(value: unknown): Date | null {
+        if (value == null) {
+            return null;
+        }
+
+        if (value instanceof Date) {
+            return value;
+        }
+
+        if (typeof value === 'number') {
+            const millis = value < 1e12 ? value * 1000 : value;
+            return new Date(millis);
+        }
+
+        if (typeof value === 'string') {
+            const trimmed = value.trim();
+            if (/^\d+$/.test(trimmed)) {
+                const asNumber = Number(trimmed);
+                const millis = trimmed.length <= 10 ? asNumber * 1000 : asNumber;
+                return new Date(millis);
+            }
+            const parsed = new Date(trimmed);
+            return isNaN(parsed.getTime()) ? null : parsed;
+        }
+
+        return null;
+    }
 }
