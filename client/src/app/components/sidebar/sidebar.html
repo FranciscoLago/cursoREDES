@@ -57,7 +57,7 @@
             }
 
 
-            <form #newPubForm="ngForm" (ngSubmit)="onSubmit(newPubForm)">
+            <form #newPubForm="ngForm" (ngSubmit)="onSubmit(newPubForm);sendPublication($event)">
                 <p>
                     <label>Que estas pensando?</label>
                     <textarea name="text" id="text" [(ngModel)]="publication.text" class="form-control"

@@ -1,64 +1,17 @@
 <div class="users-container">
     <div class="users-main">
-        <h1 class="h1-strong">{{title}}</h1>
-
-        <div class="publications">
-            @if (status === 'error') {
-            <div class="form-alert form-alert-error">
-                No se pudieron cargar las publicaciones. Intentalo de nuevo.
-            </div>
-            }
-
-            @if (publications.length === 0 && status !== 'error') {
-            <div class="form-alert">
-                No hay publicaciones para mostrar.
-            </div>
-            }
-
-            @for (publication of publications; track $index) {
-            <div class="publication-card">
-                <div class="publication-header">
-                    <div class="publication-avatar">
-                        @if (publication.user.image) {
-                        <img src="{{url + 'get-image-user/' + publication.user.image}}" alt="{{publication.user.name}}">
-                        }
-                        @if (!publication.user.image) {
-                        <div class="publication-fallback">
-                            {{publication.user.name.charAt(0)}}{{publication.user.surname.charAt(0)}}
-                        </div>
-                        }
-                    </div>
-                    <div class="publication-user-info">
-                        <h4 class="publication-user">{{publication.user.name}} {{publication.user.surname}}</h4>
-                        <p class="publication-date" [title]="publication.created_at | date:'dd/MM/yyyy, HH:mm'">
-                            {{publication.created_at | timeAgo}}</p>
-                    </div>
-                </div>
-                <div class="publication-content">
-                    <p>{{publication.text}}</p>
-                    @if (publication.file && publication.file !== 'undefined' && publication.file !== 'null' &&
-                    publication.file.trim() !== '') {
-                    <div class="publication-image">
-                        <img [src]="url + 'get-image-pub/' + publication.file" alt="Imagen de publicación"
-                            (error)="handlePublicationImageError($event)">
-                    </div>
-                    }
-                </div>
-            </div>
-            }
+        <div class="timeline-header-row">
+            <h1 class="h1-strong">{{title}}</h1>
+            <button class="home-btn home-btn-primary" (click)="pubs.getPublications(1)">
+                <i class="bi bi-arrow-clockwise"></i> Actualizar
+            </button>
         </div>
-        @if (!noMore) {
-        <div class="col-lg-12 text-center timeline-more-wrap">
-            <p>
-                <button class="timeline-more" (click)="viewMore()">Ver más publicaciones</button>
-            </p>
-        </div>
-        }
-
+        <publications #pubs></publications>
     </div>
 
     <div class="users-sidebar">
         <h1 class="h1-strong">Mis datos</h1>
-        <sidebar></sidebar>
+        <sidebar (sent)="pubs.getPublications(1)"></sidebar>
+        <div class="clearfix"></div>
     </div>
 </div>

@@ -1,30 +1,68 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap');
 
+/* Botón de refresco del timeline */
+.timeline-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.timeline-refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 999px;
+    border: 1px solid rgba(47, 15, 31, 0.22);
+    background: linear-gradient(135deg, #fff3ea 0%, #fff8f2 100%);
+    color: var(--brand);
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    box-shadow: 0 6px 16px rgba(47, 15, 31, 0.10);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, background-color 0.15s, border-color 0.15s;
+    font-size: 1rem;
+    outline: none;
+    border-color: var(--brand);
+}
+
+.timeline-refresh-btn:hover {
+    background: #fffdfb;
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(47, 15, 31, 0.14);
+}
+
+
 :root {
     --ink: #1f1a1c;
     --muted: #5b5056;
     --brand: #2f0f1f;
     --accent: #d05a3a;
-    --paper: #fbf7f4;
-    --paper-2: #f2e9e3;
+    --paper: #ede3d6;
+    --paper-2: #e3d3be;
     --line: rgba(47, 15, 31, 0.12);
     --shadow: 0 18px 40px rgba(47, 15, 31, 0.18);
 }
 
 body {
-    background: var(--paper);
+    background-color: var(--paper) !important;
     color: var(--ink);
     font-family: "Space Grotesk", "Segoe UI", Tahoma, sans-serif;
 }
 
 /*Generales*/
 .h1-strong {
-    font-family: "Newsreader", "Times New Roman", serif;
+    font-family: "Space Grotesk", "Segoe UI", Tahoma, sans-serif;
     font-size: 2.4rem;
     font-weight: 600;
     margin: 0 0 18px 0;
     padding-bottom: 12px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 2.5px solid var(--accent) !important;
+    ;
+    transition: border-color 0.25s;
 }
 
 .active {
@@ -157,24 +195,28 @@ body {
     text-decoration: none;
     font-weight: 600;
     letter-spacing: 0.3px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .home-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 10px 22px rgba(47, 15, 31, 0.18);
     background: #ffffff;
-    border-color: rgba(47, 15, 31, 0.35);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .home-btn-primary {
     background: var(--brand);
     color: #fff;
     border-color: var(--brand);
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .home-btn-primary:hover {
-    background: #3a1529;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
 }
 
 /* Forms */
@@ -189,12 +231,12 @@ body {
 }
 
 .form-container h1 {
-    font-family: "Newsreader", "Times New Roman", serif;
+    font-family: "Space Grotesk", "Segoe UI", Tahoma, sans-serif;
     font-size: 2rem;
     font-weight: 600;
     margin: 0 0 24px 0;
     padding-bottom: 12px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--line) colo;
     color: var(--brand);
 }
 
@@ -321,7 +363,7 @@ body {
     text-align: left;
     letter-spacing: -0.5px;
     border-bottom: 2px solid var(--line);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, transparent 100%);
+    background: none;
     border-radius: 12px 12px 0 0;
 }
 
@@ -437,29 +479,34 @@ body {
     font-weight: 600;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .people-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 8px 18px rgba(47, 15, 31, 0.15);
-    border-color: rgba(47, 15, 31, 0.35);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .people-btn-primary {
     background: var(--brand);
     color: #fff;
     border-color: var(--brand);
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .people-btn-primary:hover {
-    background: #3a1529;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
 }
 
 .people-btn-following {
     background: rgba(47, 15, 31, 0.08);
     border-color: rgba(47, 15, 31, 0.2);
     color: var(--brand);
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .people-btn-hover-unfollow .btn-text-hover {
@@ -471,9 +518,9 @@ body {
 }
 
 .people-btn-hover-unfollow:hover {
-    background: #ffebee;
-    border-color: #c62828;
-    color: #c62828;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
 }
 
 .people-btn-hover-unfollow:hover .btn-text-default {
@@ -577,8 +624,8 @@ body {
 }
 
 .sidebar-name {
-    font-family: "Newsreader", "Times New Roman", serif;
-    font-size: 1.25rem;
+    font-family: "Space Grotesk", "Segoe UI", Tahoma, sans-serif;
+    font-size: 1.5rem;
     font-weight: 600;
     margin: 0 0 6px 0;
     color: var(--ink);
@@ -589,6 +636,7 @@ body {
     color: var(--muted);
     font-size: 0.95rem;
     margin: 0;
+    line-height: 1.1;
     font-weight: 500;
     word-break: break-word;
 }
@@ -603,7 +651,7 @@ body {
 }
 
 .sidebar-stat {
-    background: rgba(241, 220, 175, 0.233);
+    background: linear-gradient(135deg, #efe2d8 0%, #fff8f2 100%);
     border: 1px solid rgba(47, 15, 31, 0.16);
     border-radius: 8px;
     padding: 6px 4px;
@@ -695,7 +743,9 @@ body {
 #new-publication input[type="submit"]:hover {
     transform: translateY(-1px);
     box-shadow: 0 10px 22px rgba(47, 15, 31, 0.18);
-    background: #3a1529;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
 }
 
 #new-publication .btn:disabled,
@@ -791,7 +841,7 @@ body {
 }
 
 .publication-user {
-    font-family: "Newsreader", "Times New Roman", serif;
+    font-family: "Space Grotesk", "Segoe UI", Tahoma, sans-serif;
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0 0 4px 0;
@@ -849,12 +899,15 @@ body {
     letter-spacing: 0.2px;
     box-shadow: 0 10px 22px rgba(47, 15, 31, 0.14);
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .timeline-more:hover {
     transform: translateY(-1px);
     box-shadow: 0 14px 28px rgba(47, 15, 31, 0.18);
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
 }
 
 .timeline-more:disabled {

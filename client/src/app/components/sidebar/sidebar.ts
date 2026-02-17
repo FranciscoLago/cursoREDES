@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { GLOBAL } from '../../services/global';
@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { Publication } from '../../models/publication';
 import { PublicationService } from '../../services/publication';
 import { UploadService } from '../../services/upload.service';
+import { ActivatedRoute, Router } from "@angular/router";
+import { send } from 'process';
 
 @Component({
     selector: 'sidebar',
@@ -25,11 +27,14 @@ export class Sidebar implements OnInit, OnDestroy {
     public filesToUpload: Array<File> = [];
 
 
+
     constructor(
         private _userService: UserService,
         private cdr: ChangeDetectorRef,
         private _publicationService: PublicationService,
-        private _uploadService: UploadService
+        private _uploadService: UploadService,
+        private _route: ActivatedRoute,
+        private _router: Router
 
     ) {
         this.identity = this._userService.getIdentity();
@@ -74,8 +79,10 @@ export class Sidebar implements OnInit, OnDestroy {
     onSubmit(form: any): void {
         this._publicationService.addPublication(this.token, this.publication).subscribe({
             next: (response: any) => {
+                console.log('Respuesta de addPublication:', response);
                 if (response.publication) {
                     const publicationId = response.publication._id || response.publication.id;
+                    console.log('publicationId:', publicationId, 'filesToUpload:', this.filesToUpload);
 
                     if (this.filesToUpload.length > 0 && publicationId) {
                         this._uploadService.makeFileRequest(
@@ -84,10 +91,12 @@ export class Sidebar implements OnInit, OnDestroy {
                             this.filesToUpload,
                             'image'
                         ).then(() => {
+                            console.log('Imagen subida correctamente, emitiendo evento...');
                             this.status = "success";
                             this.filesToUpload = [];
                             form.reset();
                             this.cdr.detectChanges();
+                            this.sendPublication(null);
                         }).catch((error: any) => {
                             console.error('Error subiendo imagen:', error);
                             this.status = "error";
@@ -97,8 +106,10 @@ export class Sidebar implements OnInit, OnDestroy {
                         this.status = "success";
                         form.reset();
                         this.cdr.detectChanges();
+                        this.sendPublication(null);
                     }
                 } else {
+                    console.log('No se recibió publication en la respuesta');
                     this.status = "error";
                 }
             },
@@ -110,6 +121,13 @@ export class Sidebar implements OnInit, OnDestroy {
 
     fileChangeEvent(fileInput: any) {
         this.filesToUpload = <Array<File>>fileInput.target.files;
+    }
+
+    //Output
+    @Output() sent = new EventEmitter();
+    sendPublication(event: any) {
+        console.log('Emitiendo evento de publicación enviada');
+        this.sent.emit({ send: 'true' });
     }
 
 }

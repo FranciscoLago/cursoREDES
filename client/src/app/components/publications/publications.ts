@@ -6,15 +6,16 @@ import { ChangeDetectorRef } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { Sidebar } from "../sidebar/sidebar";
 import { PublicationService } from "../../services/publication";
-import { PublicationsComponent } from "../publications/publications";
+import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
+import { DatePipe } from "@angular/common";
 
 @Component({
-    selector: "timeline",
-    templateUrl: "./timeline.html",
+    selector: "publications",
+    templateUrl: "./publications.html",
     standalone: true,
-    imports: [Sidebar, PublicationsComponent]
+    imports: [TimeAgoPipe, DatePipe]
 })
-export class TimelineComponent implements OnInit {
+export class PublicationsComponent implements OnInit {
     public title: string;
     public identity: any;
     public token: string | null;
@@ -33,7 +34,7 @@ export class TimelineComponent implements OnInit {
         private _userService: UserService,
         private _publicationService: PublicationService
     ) {
-        this.title = "Timeline";
+        this.title = "Publicaciones";
         this.identity = this._userService.getIdentity();
         this.token = this._userService.getToken();
         this.url = GLOBAL.url;
@@ -46,7 +47,7 @@ export class TimelineComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log("Timeline component loaded");
+        console.log("Publications component loaded");
         this.getPublications(1);
     }
 
@@ -104,8 +105,36 @@ export class TimelineComponent implements OnInit {
         }
     }
 
-    refresh(event: any): void {
-        this.getPublications(1);
+    handlePublicationImageError(event: Event): void {
+        const img = event.target as HTMLImageElement;
+        img.style.display = 'none';
     }
 
+    parseCreatedAt(value: unknown): Date | null {
+        if (value == null) {
+            return null;
+        }
+
+        if (value instanceof Date) {
+            return value;
+        }
+
+        if (typeof value === 'number') {
+            const millis = value < 1e12 ? value * 1000 : value;
+            return new Date(millis);
+        }
+
+        if (typeof value === 'string') {
+            const trimmed = value.trim();
+            if (/^\d+$/.test(trimmed)) {
+                const asNumber = Number(trimmed);
+                const millis = trimmed.length <= 10 ? asNumber * 1000 : asNumber;
+                return new Date(millis);
+            }
+            const parsed = new Date(trimmed);
+            return isNaN(parsed.getTime()) ? null : parsed;
+        }
+
+        return null;
+    }
 }
