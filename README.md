@@ -116,4 +116,4 @@ MIT
 
 ---
 
-> Hecho con ❤️ por tu equipo SocialApp
+> Hecho con ❤️ aprendiendo y poniendole mucho empeño. El proyecto sigue desarrollandose, por lo que mas funcionalidades llegarán pronto! 
