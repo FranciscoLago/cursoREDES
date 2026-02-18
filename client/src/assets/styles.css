@@ -1,5 +1,295 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap');
 
+
+/* Alertas elegantes para sidebar (publicación) */
+.sidebar-alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(47, 15, 31, 0.10);
+    animation: sidebar-alert-fadein 0.3s cubic-bezier(.4, 0, .2, 1);
+    transition: opacity 0.3s;
+}
+
+.sidebar-alert-success {
+    background: linear-gradient(90deg, #e8f5e9 0%, #f3fbe8 100%);
+    color: #2e7d32;
+    border: 1.5px solid #b2dfdb;
+}
+
+.sidebar-alert-error {
+    background: linear-gradient(90deg, #ffebee 0%, #fff8f2 100%);
+    color: #c62828;
+    border: 1.5px solid #ffcdd2;
+}
+
+.sidebar-alert-icon {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
+@keyframes sidebar-alert-fadein {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Botón de borrar publicación elegante y alineado a la derecha */
+.publication-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+}
+
+.publication-delete-btn {
+    margin-left: auto;
+    background: rgba(208, 90, 58, 0.08);
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(208, 90, 58, 0.08);
+    transition: background-color 0.18s, color 0.18s, border-color 0.18s, transform 0.15s;
+    outline: none;
+    position: relative;
+    z-index: 1;
+}
+
+.publication-delete-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--brand);
+    transform: translateY(-1px) scale(1.07);
+}
+
+
+/* Modal elegante para confirmación de borrado */
+.mymodal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(47, 15, 31, 0.18);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: mymodal-fadein 0.25s cubic-bezier(.4, 0, .2, 1);
+}
+
+.mymodal-content {
+    background: linear-gradient(135deg, #fff8f2 0%, #f9e2d3 100%);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(47, 15, 31, 0.18);
+    padding: 32px 28px 22px 28px;
+    min-width: 340px;
+    max-width: 90vw;
+    animation: mymodal-popin 0.32s cubic-bezier(.4, 0, .2, 1);
+    border: 1.5px solid var(--accent);
+    position: relative;
+}
+
+.mymodal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.mymodal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--brand);
+    letter-spacing: 0.2px;
+}
+
+.mymodal-close {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.18s;
+    border-radius: 50%;
+    padding: 2px 8px;
+}
+
+.mymodal-close:hover {
+    color: var(--accent);
+    background: #f9e2d3;
+}
+
+.mymodal-body {
+    margin-bottom: 18px;
+    color: var(--ink);
+    font-size: 1.05rem;
+}
+
+.mymodal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.mymodal-btn {
+    border-radius: 999px;
+    border: 1.5px solid transparent;
+    padding: 8px 22px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.18s, color 0.18s, border-color 0.18s, transform 0.15s;
+    outline: none;
+}
+
+.mymodal-cancel {
+    background: #fff;
+    color: var(--muted);
+    border-color: var(--line);
+}
+
+.mymodal-cancel:hover {
+    background: #f9e2d3;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.mymodal-confirm {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(208, 90, 58, 0.10);
+}
+
+.mymodal-confirm:hover {
+    background: var(--brand);
+    color: #fff;
+    border-color: var(--brand);
+    transform: translateY(-1px) scale(1.04);
+}
+
+@keyframes mymodal-fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes mymodal-popin {
+    0% {
+        opacity: 0;
+        transform: scale(0.92) translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.no-scroll {
+    overflow: hidden !important;
+    height: 100vh !important;
+}
+
+/* Botón de ampliar/cerrar imagen en publicaciones */
+.image-expand-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--accent);
+    cursor: pointer;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(47, 15, 31, 0.10);
+    transition: background-color 0.18s, border-color 0.18s, color 0.18s;
+}
+
+.image-expand-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--brand);
+}
+
+.image-preview-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(30, 20, 20, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    cursor: zoom-out;
+}
+
+.image-preview-modal {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(47, 15, 31, 0.25);
+    background: #fff;
+    padding: 8px;
+}
+
+
+
+/* Enlaces de usuario y datos personales: sin subrayado ni azul, solo color de acento al hover */
+.user-link,
+a.user-link,
+a.user-link:visited,
+a.user-link:active {
+    color: inherit !important;
+    text-decoration: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: color 0.18s;
+}
+
+.user-link:hover,
+a.user-link:hover,
+a.user-link:focus {
+    color: var(--accent) !important;
+    text-decoration: underline !important;
+}
+
 /* Publicaciones en el perfil: ancho y layout uniforme */
 .profile-publications {
     width: 100%;
@@ -146,18 +436,6 @@
 }
 
 /* Enlace al perfil desde la lista de usuarios */
-.user-link {
-    color: var(--brand);
-    text-decoration: none;
-    font-weight: 700;
-    cursor: pointer;
-    transition: color 0.18s;
-}
-
-.user-link:hover {
-    color: var(--accent);
-    text-decoration: underline;
-}
 
 
 

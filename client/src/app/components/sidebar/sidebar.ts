@@ -6,14 +6,14 @@ import { Subscription } from 'rxjs';
 import { Publication } from '../../models/publication';
 import { PublicationService } from '../../services/publication';
 import { UploadService } from '../../services/upload.service';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { send } from 'process';
 
 @Component({
     selector: 'sidebar',
     templateUrl: './sidebar.html',
     standalone: true,
-    imports: [FormsModule],
+    imports: [FormsModule, RouterLink],
     providers: [UploadService]
 })
 export class Sidebar implements OnInit, OnDestroy {
@@ -96,25 +96,48 @@ export class Sidebar implements OnInit, OnDestroy {
                             this.filesToUpload = [];
                             form.reset();
                             this.cdr.detectChanges();
+                            setTimeout(() => {
+                                this.status = "";
+                                this.cdr.detectChanges();
+                            }, 2000);
                             this.sendPublication(null);
                         }).catch((error: any) => {
                             console.error('Error subiendo imagen:', error);
                             this.status = "error";
                             this.cdr.detectChanges();
+                            setTimeout(() => {
+                                this.status = "";
+                                this.cdr.detectChanges();
+                            }, 2000);
                         });
                     } else {
                         this.status = "success";
                         form.reset();
                         this.cdr.detectChanges();
+                        setTimeout(() => {
+                            this.status = "";
+                            this.cdr.detectChanges();
+                        }, 2000);
                         this.sendPublication(null);
                     }
                 } else {
                     console.log('No se recibió publication en la respuesta');
                     this.status = "error";
+                    this.cdr.detectChanges();
+                    setTimeout(() => {
+                        this.status = "";
+                        this.cdr.detectChanges();
+                    }, 2000);
                 }
             },
             error: (error: any) => {
                 console.error('Error creando publication:', error);
+                this.status = "error";
+                this.cdr.detectChanges();
+                setTimeout(() => {
+                    this.status = "";
+                    this.cdr.detectChanges();
+                }, 2000);
             }
         });
     }

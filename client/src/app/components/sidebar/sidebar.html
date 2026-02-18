@@ -3,18 +3,26 @@
         <div class="sidebar-header">
             <div class="sidebar-avatar">
                 @if (identity.image) {
-                <img src="{{url + 'get-image-user/' + identity.image}}" alt="{{identity.name}}">
+                <a [routerLink]="['/perfil', identity._id]" class="user-link">
+                    <img src="{{url + 'get-image-user/' + identity.image}}" alt="{{identity.name}}">
+                </a>
+
                 }
                 @if (!identity.image) {
                 <div class="sidebar-avatar-fallback">
-                    {{identity.name.charAt(0)}}{{identity.surname.charAt(0)}}
+                    <a [routerLink]="['/perfil', identity._id] " class="user-link">
+                        {{identity.name.charAt(0)}}{{identity.surname.charAt(0)}}
+                    </a>
                 </div>
                 }
             </div>
 
             <div class="sidebar-info">
-                <h3 class="sidebar-name">{{identity.name}} {{identity.surname}}</h3>
-                <p class="sidebar-nick">@{{identity.nick}}</p>
+                <a [routerLink]="['/perfil', identity._id]" class="user-link">
+                    <h3 class="sidebar-name">{{identity.name}} {{identity.surname}}</h3>
+                    <p class="sidebar-nick">@{{identity.nick}}</p>
+                </a>
+
             </div>
         </div>
 
@@ -42,17 +50,18 @@
 <div class="sidebar-shell">
     <div class="sidebar-card">
         <div id="new-publication">
+
             @if (status === "success") {
-
-            <div class="alert alert-success">
-                Publicación creada correctamente.
+            <div class="sidebar-alert sidebar-alert-success">
+                <span class="sidebar-alert-icon">✔</span>
+                <span>Publicación creada correctamente.</span>
             </div>
-
             }
 
             @if (status === "error") {
-            <div class="alert alert-danger">
-                Error al crear la publicación. Por favor, inténtalo de nuevo.
+            <div class="sidebar-alert sidebar-alert-error">
+                <span class="sidebar-alert-icon">✖</span>
+                <span>Error al crear la publicación. Por favor, inténtalo de nuevo.</span>
             </div>
             }
 

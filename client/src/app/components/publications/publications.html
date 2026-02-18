@@ -16,32 +16,77 @@
         <div class="publication-header">
             <div class="publication-avatar">
                 @if (publication.user.image) {
-                <img src="{{url + 'get-image-user/' + publication.user.image}}" alt="{{publication.user.name}}">
+                <a [routerLink]="['/perfil', publication.user._id]" class="user-link">
+                    <img src="{{url + 'get-image-user/' + publication.user.image}}" alt="{{publication.user.name}}">
+                </a>
                 }
                 @if (!publication.user.image) {
-                <div class="publication-fallback">
+                <a [routerLink]="['/perfil', publication.user._id]" class="publication-fallback user-link">
                     {{publication.user.name.charAt(0)}}{{publication.user.surname.charAt(0)}}
-                </div>
+                </a>
                 }
             </div>
             <div class="publication-user-info">
-                <h4 class="publication-user">{{publication.user.name}} {{publication.user.surname}}</h4>
+                <a [routerLink]="['/perfil', publication.user._id]" class="user-link">
+                    <h4 class="publication-user">{{publication.user.name}} {{publication.user.surname}}</h4>
+                </a>
                 <p class="publication-date" [title]="publication.created_at | date:'dd/MM/yyyy, HH:mm'">
-                    {{publication.created_at | timeAgo}}</p>
+                    {{publication.created_at | timeAgo}}
+                </p>
             </div>
+            @if (publication.user._id === identity._id) {
+            <button class="publication-delete-btn" (click)="openDeleteModal(publication._id)"
+                title="Eliminar publicación">
+                <span class="bi bi-trash"></span>
+            </button>
+            }
         </div>
         <div class="publication-content">
             <p>{{publication.text}}</p>
             @if (publication.file && publication.file !== 'undefined' && publication.file !== 'null' &&
             publication.file.trim() !== '') {
-            <div class="publication-image">
+            <div class="publication-image" style="position:relative;">
                 <img [src]="url + 'get-image-pub/' + publication.file" alt="Imagen de publicación"
                     (error)="handlePublicationImageError($event)">
+                <button type="button" class="image-expand-btn"
+                    (click)="toggleImagePreview(url + 'get-image-pub/' + publication.file)"
+                    [attr.aria-label]="expandedImage === (url + 'get-image-pub/' + publication.file) ? 'Cerrar vista ampliada' : 'Ampliar imagen'">
+                    @if (expandedImage !== (url + 'get-image-pub/' + publication.file)) {<span>🔍</span>}
+                    @if (expandedImage === (url + 'get-image-pub/' + publication.file)) {<span>✖</span>}
+                </button>
             </div>
             }
         </div>
     </div>
     }
+
+    @if (showDeleteModal) {
+    <div class="mymodal-overlay" (click)="closeDeleteModal()">
+        <div class="mymodal-content" (click)="$event.stopPropagation()">
+            <div class="mymodal-header">
+                <span class="mymodal-title">¿Eliminar publicación?</span>
+                <button class="mymodal-close" (click)="closeDeleteModal()">✖</button>
+            </div>
+            <div class="mymodal-body">
+                <p>¿Estás seguro de que quieres borrar esta publicación? Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="mymodal-actions">
+                <button class="mymodal-btn mymodal-cancel" (click)="closeDeleteModal()">Cancelar</button>
+                <button class="mymodal-btn mymodal-confirm" (click)="confirmDeletePublication()">Sí, borrar</button>
+            </div>
+        </div>
+    </div>
+    }
+
+
+    @if (expandedImage) {
+    <div class="image-preview-overlay">
+        <button type="button" class="image-preview-close" (click)="toggleImagePreview(expandedImage)"
+            aria-label="Cerrar vista ampliada">✖</button>
+        <img [src]="expandedImage" alt="Imagen ampliada" class="image-preview-modal">
+    </div>
+    }
+
     @if (publications.length > 0 && !noMore) {
     <div class="col-lg-12 text-center timeline-more-wrap">
         <p>
@@ -49,5 +94,4 @@
         </p>
     </div>
     }
-
 </div>

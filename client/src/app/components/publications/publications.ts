@@ -1,4 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { Renderer2, Inject } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
+import { RouterModule } from "@angular/router";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { Publication } from "../../models/publication";
 import { GLOBAL } from "../../services/global";
@@ -13,7 +16,7 @@ import { DatePipe } from "@angular/common";
     selector: "publications",
     templateUrl: "./publications.html",
     standalone: true,
-    imports: [TimeAgoPipe, DatePipe]
+    imports: [TimeAgoPipe, DatePipe, RouterModule]
 })
 export class PublicationsComponent implements OnInit {
     public title: string;
@@ -28,12 +31,17 @@ export class PublicationsComponent implements OnInit {
     public publications: Publication[];
     @Input() user: string = "";
 
+    // Estado para preview de imagen ampliada
+    public expandedImage: string | null = null;
+
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
         private cdr: ChangeDetectorRef,
         private _userService: UserService,
-        private _publicationService: PublicationService
+        private _publicationService: PublicationService,
+        private renderer: Renderer2,
+        @Inject(DOCUMENT) private document: Document
     ) {
         this.title = "Publicaciones";
         this.identity = this._userService.getIdentity();
@@ -120,6 +128,16 @@ export class PublicationsComponent implements OnInit {
         img.style.display = 'none';
     }
 
+    toggleImagePreview(imageUrl: string): void {
+        if (this.expandedImage === imageUrl) {
+            this.expandedImage = null;
+            this.renderer.removeClass(this.document.body, 'no-scroll');
+        } else {
+            this.expandedImage = imageUrl;
+            this.renderer.addClass(this.document.body, 'no-scroll');
+        }
+    }
+
     parseCreatedAt(value: unknown): Date | null {
         if (value == null) {
             return null;
@@ -146,5 +164,38 @@ export class PublicationsComponent implements OnInit {
         }
 
         return null;
+    }
+
+    refresh(event: any): void {
+        this.getPublications(1);
+    }
+
+
+    // Modal de confirmación para borrar publicación
+    public showDeleteModal: boolean = false;
+    public publicationToDelete: string | null = null;
+
+    openDeleteModal(id: string): void {
+        this.publicationToDelete = id;
+        this.showDeleteModal = true;
+    }
+
+    closeDeleteModal(): void {
+        this.showDeleteModal = false;
+        this.publicationToDelete = null;
+    }
+
+    confirmDeletePublication(): void {
+        if (!this.publicationToDelete) return;
+        this._publicationService.deletePublication(this.token!, this.publicationToDelete).subscribe({
+            next: (response) => {
+                this.refresh(null);
+                this.closeDeleteModal();
+            },
+            error: (error) => {
+                console.error("Error deleting publication:", error);
+                this.closeDeleteModal();
+            }
+        });
     }
 }
