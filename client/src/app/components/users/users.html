@@ -29,7 +29,9 @@
                         }
                     </div>
                     <div class="people-meta">
-                        <div class="people-name">{{user.name}} {{user.surname}}</div>
+                        <div class="people-name">
+                            <a [routerLink]="['/perfil', user._id]" class="user-link">{{user.name}} {{user.surname}}</a>
+                        </div>
                         <div class="people-nick">@{{user.nick}}</div>
                         <div class="people-email">{{user.email}}</div>
                     </div>

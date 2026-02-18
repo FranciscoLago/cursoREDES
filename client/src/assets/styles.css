@@ -1,5 +1,161 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap');
 
+
+/* Acciones de seguir/dejar de seguir en perfil */
+.profile-follow-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.profile-followed-label {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+    border-radius: 8px;
+    padding: 4px 14px;
+    font-size: 0.98rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.profile-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 22px;
+    border-radius: 999px;
+    border: 1.5px solid var(--brand);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+    background: #fffdfb;
+    color: var(--brand);
+    box-shadow: 0 2px 8px rgba(47, 15, 31, 0.07);
+}
+
+.profile-btn-primary {
+    background: var(--brand);
+    color: #fff;
+    border-color: var(--brand);
+}
+
+.profile-btn-primary:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.profile-btn-danger {
+    background: #fffdfb;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.profile-btn-danger:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+
+
+/* Fallback de avatar en perfil (siglas) */
+.profile-avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 2.4rem;
+    color: var(--brand);
+    letter-spacing: 2px;
+    background: linear-gradient(160deg, #f9e2d3 0%, #fff2ea 100%);
+    border-radius: 32px;
+}
+
+/* Enlace al perfil desde la lista de usuarios */
+.user-link {
+    color: var(--brand);
+    text-decoration: none;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.18s;
+}
+
+.user-link:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+
+
+
+/* Perfil - Avatar grande y tarjeta */
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 38px 32px 32px 32px;
+    border-radius: 18px;
+    background: linear-gradient(140deg, #fff3ea 0%, #f8efe9 35%, #fff8f2 100%);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    margin: 32px 0 0 0;
+    min-height: 340px;
+}
+
+.profile-avatar-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.profile-avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 32px;
+    overflow: hidden;
+    border: 2.5px solid var(--accent);
+    background: #fffdfb;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 24px rgba(47, 15, 31, 0.10);
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.profile-user-info {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.profile-name {
+    font-family: "Space Grotesk", "Segoe UI", Tahoma, sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    color: var(--ink);
+}
+
+.profile-nick {
+    color: var(--muted);
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+
 /* Botón de refresco del timeline */
 .timeline-header-row {
     display: flex;
@@ -195,7 +351,7 @@ body {
     text-decoration: none;
     font-weight: 600;
     letter-spacing: 0.3px;
-    transition: transform 0.15s, box-shadow 0.15s, background 0.2s, border-color 0.2s, color 0.2s;
+    transition: transform 0.15s, box-shadow 0.15s, background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .home-btn:hover {
@@ -210,7 +366,7 @@ body {
     background: var(--brand);
     color: #fff;
     border-color: var(--brand);
-    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .home-btn-primary:hover {
@@ -236,7 +392,7 @@ body {
     font-weight: 600;
     margin: 0 0 24px 0;
     padding-bottom: 12px;
-    border-bottom: 1px solid var(--line) colo;
+    border-bottom: 1px solid var(--line);
     color: var(--brand);
 }
 
@@ -449,6 +605,7 @@ body {
     font-size: 1.05rem;
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -459,6 +616,7 @@ body {
     font-size: 0.92rem;
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -899,7 +1057,7 @@ body {
     letter-spacing: 0.2px;
     box-shadow: 0 10px 22px rgba(47, 15, 31, 0.14);
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s, background 0.2s, border-color 0.2s, color 0.2s;
+    transition: transform 0.15s, box-shadow 0.15s, background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .timeline-more:hover {
@@ -915,4 +1073,21 @@ body {
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+}
+
+/* PERFILES */
+#data-profile {
+    min-height: 500px;
+}
+
+#data-profile .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 24px;
+    overflow: hidden;
+    margin: 0 auto 16px auto;
+    border: 1px solid rgba(47, 15, 31, 0.2);
+    background: #fffdfb;
+    display: grid;
+    place-items: center;
 }

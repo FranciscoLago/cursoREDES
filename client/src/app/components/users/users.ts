@@ -101,19 +101,21 @@ export class UsersComponent implements OnInit {
 
     followUser(followed: string) {
         var follow = new Follow("", this.identity._id, followed);
-
         this._followService.addFollow(this.token || "", follow).subscribe({
             next: response => {
                 if (!response.follow) {
                     console.error('Error al seguir usuario');
                 } else {
-                    this.follows.push(followed);
-                    // Actualizar stats del sidebar
+                    // Actualizar stats globales y emitirlos para el sidebar
                     this._userService.getCounters().subscribe({
                         next: (counters: any) => {
+                            localStorage.setItem('stats', JSON.stringify(counters));
+                            this._userService.statsSubject.next(counters);
                             this.cdr.detectChanges();
                         }
                     });
+                    // Refrescar la lista de usuarios y follows para evitar doble follow
+                    this.getUsers(this.page);
                 }
                 this.cdr.detectChanges();
             },
@@ -127,17 +129,16 @@ export class UsersComponent implements OnInit {
     unfollowUser(followed: string) {
         this._followService.deleteFollow(this.token || "", followed).subscribe({
             next: response => {
-                console.log('Unfollow response:', response);
-                var i = this.follows.indexOf(followed);
-                if (i !== -1) {
-                    this.follows.splice(i, 1);
-                }
-                // Actualizar stats del sidebar
+                // Actualizar stats globales y emitirlos para el sidebar
                 this._userService.getCounters().subscribe({
                     next: (counters: any) => {
+                        localStorage.setItem('stats', JSON.stringify(counters));
+                        this._userService.statsSubject.next(counters);
                         this.cdr.detectChanges();
                     }
                 });
+                // Refrescar la lista de usuarios y follows para evitar doble follow
+                this.getUsers(this.page);
                 this.cdr.detectChanges();
             },
             error: error => {

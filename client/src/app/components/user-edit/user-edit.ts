@@ -38,7 +38,7 @@ export class UserEdit implements OnInit {
 
     ngOnInit() {
         console.log('Usuario:', this.user);
-        console.log('ID del usuario:', this.user?.id);
+        console.log('ID del usuario:', this.user?._id);
         console.log('user-edit.component cargado');
     }
 
@@ -50,7 +50,7 @@ export class UserEdit implements OnInit {
         }
 
         console.log('Enviando usuario:', this.user);
-        console.log('ID a usar:', this.user.id);
+        console.log('ID a usar:', this.user._id);
         this._userService.updateUser(this.user).subscribe({
             next: response => {
                 if (!response.user) {
@@ -62,7 +62,7 @@ export class UserEdit implements OnInit {
 
                     // SUBIDA DE IMAGEN DE USUARIO
                     this._uploadService.makeFileRequest(
-                        this._uploadService.url + 'upload-image-user/' + this.user.id,
+                        this._uploadService.url + 'upload-image-user/' + this.user._id,
                         [],
                         this.filesToUpload,
                         'image'

@@ -1,6 +1,6 @@
 export class User {
     constructor(
-        public id: string,
+        public _id: string,
         public name: string,
         public surname: string,
         public nick: string,
@@ -8,8 +8,7 @@ export class User {
         public password: string,
         public role: string,
         public image: string,
-        public gettoken?: string,
-        public _id?: string
+        public gettoken?: string
     ) { }
 }
 

@@ -42,7 +42,7 @@ export class Sidebar implements OnInit, OnDestroy {
         this.url = GLOBAL.url;
         this.stats = {};
         this.status = "";
-        this.publication = new Publication("", "", "", "", this.identity.id);
+        this.publication = new Publication("", "", "", "", this.identity._id);
     }
 
     ngOnInit(): void {

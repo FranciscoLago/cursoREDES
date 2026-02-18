@@ -51,10 +51,7 @@ export class UserService {
 
         let identity = JSON.parse(storedIdentity);
 
-        // Mapear _id de MongoDB a id del modelo User
-        if (identity._id && !identity.id) {
-            identity.id = identity._id;
-        }
+        // Solo usar _id como identificador único
 
         this.identity = identity;
 
@@ -112,7 +109,7 @@ export class UserService {
         let params = JSON.stringify(user);
         let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', this.getToken() || '');
 
-        return this._http.put(this.url + 'update-user/' + user.id, params, { headers: headers });
+        return this._http.put(this.url + 'update-user/' + user._id, params, { headers: headers });
 
     }
 

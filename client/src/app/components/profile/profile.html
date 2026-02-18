@@ -1,5 +1,41 @@
-<div class="col-lg-8">
-    <h1>{{ title }}</h1>
-</div>
+<div class="users-container">
+    <div class="users-main">
+        <h1 class="h1-strong">{{ title }}</h1>
+        @if (user) {
+        <div id="data-profile" class="profile-card">
+            <div class="profile-avatar-wrap">
+                <div class="profile-avatar">
+                    @if (user.image) {
+                    <img src="{{ url + 'get-image-user/' + user.image }}" alt="Foto de perfil">
+                    } @else {
+                    <div class="profile-avatar-fallback">
+                        {{ user.name.charAt(0) }}{{ user.surname.charAt(0) }}
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="profile-user-info">
+                <h2 class="profile-name">{{ user.name }}</h2>
+                <p class="profile-nick">@{{ user.nick }}</p>
+            </div>
 
-<sidebar></sidebar>
+            <div class="profile-follow-actions">
+                @if (user._id !== identity._id) {
+                @if (followed) {
+                <div class="profile-followed-label">Te sigue</div>
+                }
+                @if (!following) {
+                <button class="profile-btn profile-btn-primary" (click)="followUser(user._id)">Seguir</button>
+                }
+                @if (following) {
+                <button class="profile-btn profile-btn-danger" (click)="unfollowUser(user._id)">Dejar de seguir</button>
+                }
+                }
+            </div>
+        </div>
+        }
+    </div>
+    <div class="users-sidebar">
+        <sidebar></sidebar>
+    </div>
+</div>
