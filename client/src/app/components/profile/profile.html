@@ -17,23 +17,49 @@
             <div class="profile-user-info">
                 <h2 class="profile-name">{{ user.name }}</h2>
                 <p class="profile-nick">@{{ user.nick }}</p>
+                @if (stats) {
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <span class="profile-stat-number">{{stats.following}}</span>
+                        <span class="profile-stat-label">Siguiendo</span>
+                    </div>
+                    <div class="profile-stat">
+                        <span class="profile-stat-number">{{stats.followed}}</span>
+                        <span class="profile-stat-label">Seguidores</span>
+                    </div>
+                    <div class="profile-stat">
+                        <span class="profile-stat-number">{{stats.publications}}</span>
+                        <span class="profile-stat-label">Publicaciones</span>
+                    </div>
+                </div>
+                }
+                <div class="profile-follow-actions">
+                    @if (user._id !== identity._id) {
+                    @if (followed) {
+                    <div class="profile-followed-label">Te sigue</div>
+                    }
+                    @if (!following) {
+                    <button class="profile-btn profile-btn-primary" (click)="followUser(user._id)">Seguir</button>
+                    }
+                    @if (following) {
+                    <button class="profile-btn profile-btn-danger" (click)="unfollowUser(user._id)">Dejar de
+                        seguir</button>
+                    }
+                    }
+                </div>
             </div>
 
-            <div class="profile-follow-actions">
-                @if (user._id !== identity._id) {
-                @if (followed) {
-                <div class="profile-followed-label">Te sigue</div>
-                }
-                @if (!following) {
-                <button class="profile-btn profile-btn-primary" (click)="followUser(user._id)">Seguir</button>
-                }
-                @if (following) {
-                <button class="profile-btn profile-btn-danger" (click)="unfollowUser(user._id)">Dejar de seguir</button>
-                }
-                }
+            @if (user && user._id) {
+            <div>
+                <publications class="profile-publications" [user]="user._id"></publications>
             </div>
+
+            }
+
+
         </div>
         }
+
     </div>
     <div class="users-sidebar">
         <sidebar></sidebar>

@@ -39,25 +39,21 @@ function savePublication(req, res) {
 //recoge el id hace un find y busca las publicaciones del user . las devuelve
 function getPublications(req, res) {
     var page = 1;
-
     if (req.params.page) {
-        page = req.params.page;
+        page = parseInt(req.params.page, 10);
     }
-
     var itemsPerPage = 4;
 
-    // Obtener TODOS los follows del usuario (sin paginar)
+    // Obtener TODOS los follows del usuario logueado
     Follow.find({ user: req.user.sub })
         .populate('followed')
         .exec()
         .then((follows) => {
             var follows_clean = [];
-
             follows.forEach((follow) => {
                 follows_clean.push(follow.followed);
-            })
-
-            // añadimos el propio id del usuario logueado para que también aparezcan sus publicaciones
+            });
+            // Añadir el propio id del usuario logueado
             follows_clean.push(req.user.sub);
 
             return Promise.all([
@@ -71,18 +67,19 @@ function getPublications(req, res) {
             ]);
         })
         .then(([publications, total]) => {
-            if (!publications || publications.length === 0) return res.status(404).send({ message: 'No hay publicaciones' });
-
             return res.status(200).send({
                 total_items: total,
-                pages: Math.ceil(total / itemsPerPage),
+                pages: total > 0 ? Math.ceil(total / itemsPerPage) : 0,
                 page: page,
                 items_per_page: itemsPerPage,
-                publications
+                publications: publications || []
             });
         })
         .catch(() => res.status(500).send({ message: 'Error al devolver las publicaciones' }));
+    // ...existing code...
 }
+
+// ...existing code...
 
 function getPublication(req, res) {
     var publicationId = req.params.id;
@@ -186,6 +183,37 @@ function getImageFile(req, res) {
         return res.sendFile(filePath);
     });
 }
+function getPublicationsUser(req, res) {
+    var page = 1;
+    if (req.params.page) {
+        page = parseInt(req.params.page, 10);
+    }
+    var itemsPerPage = 4;
+    var userId = req.params.user || req.params.id;
+    if (!userId) {
+        return res.status(400).send({ message: 'Falta el id del usuario' });
+    }
+    Promise.all([
+        Publication.find({ user: userId })
+            .sort('-created_at')
+            .skip((page - 1) * itemsPerPage)
+            .limit(itemsPerPage)
+            .populate('user')
+            .exec(),
+        Publication.countDocuments({ user: userId }).exec()
+    ])
+        .then(([publications, total]) => {
+            return res.status(200).send({
+                total_items: total,
+                pages: total > 0 ? Math.ceil(total / itemsPerPage) : 0,
+                page: page,
+                items_per_page: itemsPerPage,
+                publications: publications || []
+            });
+        })
+        .catch(() => res.status(500).send({ message: 'Error al devolver las publicaciones' }));
+}
+
 
 
 module.exports = {
@@ -195,5 +223,7 @@ module.exports = {
     getPublication,
     deletePublication,
     uploadImage,
-    getImageFile
+    getImageFile,
+    // Exportar la función correcta
+    getPublicationsUser
 }

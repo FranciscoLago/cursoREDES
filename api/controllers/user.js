@@ -227,7 +227,7 @@ function getCounters(req, res) {
     if (req.params.id) {
         userId = req.params.id;
     }
-    getCountFollows(req.user.sub).then((value) => {
+    getCountFollows(userId).then((value) => {
         return res.status(200).send(value);
     })
 }

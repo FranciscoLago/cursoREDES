@@ -6,13 +6,13 @@ import { UserService } from "../../services/user.service";
 import { FollowService } from "../../services/follow";
 import { GLOBAL } from "../../services/global";
 import { Sidebar } from "../sidebar/sidebar";
-import { get } from "jquery";
+import { PublicationsComponent } from "../publications/publications";
 
 @Component({
     selector: "profile",
     templateUrl: "./profile.html",
     standalone: true,
-    imports: [Sidebar],
+    imports: [Sidebar, PublicationsComponent],
     providers: [UserService, FollowService]
 })
 export class ProfileComponent implements OnInit {
@@ -102,11 +102,10 @@ export class ProfileComponent implements OnInit {
                 // Tras seguir, recargar usuario y counters para reflejar el estado real
                 this.getUser(followedId);
                 this.getCounters(followedId);
-                // Actualizar stats globales del usuario logueado
+                // Actualizar stats globales del usuario logueado SOLO en localStorage y statsSubject
                 this._userService.getCounters(this.identity._id).subscribe({
                     next: (stats) => {
                         localStorage.setItem('stats', JSON.stringify(stats));
-                        this.stats = stats;
                         this._userService.statsSubject.next(stats);
                         this.cdr.detectChanges();
                     }
@@ -124,11 +123,10 @@ export class ProfileComponent implements OnInit {
                 // Tras dejar de seguir, recargar usuario y counters para reflejar el estado real
                 this.getUser(followedId);
                 this.getCounters(followedId);
-                // Actualizar stats globales del usuario logueado
+                // Actualizar stats globales del usuario logueado SOLO en localStorage y statsSubject
                 this._userService.getCounters(this.identity._id).subscribe({
                     next: (stats) => {
                         localStorage.setItem('stats', JSON.stringify(stats));
-                        this.stats = stats;
                         this._userService.statsSubject.next(stats);
                         this.cdr.detectChanges();
                     }
@@ -140,7 +138,9 @@ export class ProfileComponent implements OnInit {
         })
     }
 
-
-
-
 }
+
+
+
+
+

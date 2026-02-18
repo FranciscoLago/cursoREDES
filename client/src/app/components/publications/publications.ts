@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { Publication } from "../../models/publication";
 import { GLOBAL } from "../../services/global";
@@ -26,6 +26,7 @@ export class PublicationsComponent implements OnInit {
     public pages: number;
     public itemPerPage: number;
     public publications: Publication[];
+    @Input() user: string = "";
 
     constructor(
         private _route: ActivatedRoute,
@@ -43,66 +44,75 @@ export class PublicationsComponent implements OnInit {
         this.total = 0;
         this.pages = 0;
         this.itemPerPage = 0;
+        this.user = "";
         this.publications = [];
     }
 
     ngOnInit(): void {
-        console.log("Publications component loaded");
-        this.getPublications(1);
+        this.page = 1;
+        this.getPublications(this.page);
     }
 
     getPublications(page: number, adding = false): void {
         if (!adding) {
             this.noMore = false;
         }
-        this._publicationService.getPublications(this.token!, page).subscribe({
-            next: (response) => {
-                if (response.publications) {
-                    this.total = response.total;
-                    this.pages = response.pages;
-                    this.itemPerPage = response.items_per_page;
-                    this.page = page;
-
-                    if (!adding) {
-                        this.publications = response.publications;
-                    } else {
-                        var arrayA = this.publications;
-                        var arrayB = response.publications;
-                        this.publications = arrayA.concat(arrayB);
-
-                        $('html, body').animate({ scrollTop: $('html').prop("scrollHeight") }, 300);
-                    }
-
-                    const lastPageByTotal = this.total > 0 && this.publications.length >= this.total;
-                    const lastPageBySize = response.publications.length < this.itemPerPage;
-                    this.noMore = this.total === 0 || lastPageByTotal || lastPageBySize;
-
-                    if (page > this.pages) {
-                        //this._router.navigate(['/home']);
-                    }
-                    this.status = "success";
-                    console.log('Publications loaded:', this.publications);
+        // ...existing code...
+        // Si el input 'user' es el id del usuario logueado, mostrar timeline
+        if (this.user && this.user !== "" && this.user !== this.identity._id) {
+            // Perfil: publicaciones del usuario visitado
+            this._publicationService.getPublicationsUser(this.token!, this.user, page).subscribe({
+                next: (response) => {
+                    this.handleResponse(response, page, adding);
+                },
+                error: (error) => {
+                    console.error("Error fetching publications:", error);
                 }
-                this.cdr.detectChanges();
-            },
-            error: (error) => {
-                console.error('Error loading publications:', error);
-                this.status = "error";
-                this.cdr.detectChanges();
-            }
-        });
+            });
+        } else {
+            // Timeline: publicaciones de seguidos
+            this._publicationService.getPublications(this.token!, page).subscribe({
+                next: (response) => {
+                    this.handleResponse(response, page, adding);
+                },
+                error: (error) => {
+                    console.error("Error fetching publications:", error);
+                }
+            });
+        }
     }
+
+    private handleResponse(response: any, page: number, adding: boolean): void {
+        let pubs: Publication[] = [];
+        if (Array.isArray(response.publications)) {
+            pubs = response.publications;
+        } else if (response.publications && typeof response.publications === 'object') {
+            pubs = [response.publications];
+        }
+        this.total = response.total || 0;
+        this.pages = response.pages || 0;
+        this.itemPerPage = response.items_per_page || 0;
+        this.page = page;
+        if (!adding) {
+            this.publications = pubs;
+        } else {
+            this.publications = this.publications.concat(pubs);
+            $('html, body').animate({ scrollTop: $('html').prop("scrollHeight") }, 300);
+        }
+        // El botón 'Ver más publicaciones' será visible si hay más páginas
+        this.noMore = pubs.length === 0 || (typeof this.pages === 'number' && this.pages > 0 && this.page >= this.pages);
+        this.status = "success";
+        this.cdr.detectChanges();
+    }
+
+
     public noMore = false;
     viewMore(): void {
         if (this.noMore) {
             return;
         }
-        if (this.publications.length == this.total) {
-            this.noMore = true;
-        } else {
-            this.page += 1;
-            this.getPublications(this.page, true);
-        }
+        this.page += 1;
+        this.getPublications(this.page, true);
     }
 
     handlePublicationImageError(event: Event): void {
