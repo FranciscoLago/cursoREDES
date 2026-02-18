@@ -24,24 +24,47 @@ npm start
 
 ---
 
+
 ## 🖥️ Estructura del proyecto
 
 ```
-client/
-├── src/
-│   ├── app/
-│   │   ├── components/
-│   │   │   ├── publications/
-│   │   │   ├── sidebar/
-│   │   │   └── ...
-│   │   ├── models/
-│   │   ├── services/
+CursoREDES/
+├── api/                # Backend Node.js/Express
+│   ├── app.js
+│   ├── index.js
+│   ├── package.json
+│   ├── controllers/    # Lógica de negocio (user, publication, follow, message)
+│   ├── models/         # Modelos de datos (user, publication, follow, message)
+│   ├── routes/         # Rutas de la API REST
+│   ├── middlewares/    # Middlewares (autenticación, etc)
+│   ├── services/       # Servicios auxiliares (JWT, etc)
+│   └── uploads/        # Imágenes de usuarios y publicaciones
+│       ├── users/
+│       └── publications/
+│
+├── client/             # Cliente Angular
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── components/
+│   │   │   │   ├── home/
+│   │   │   │   ├── login/
+│   │   │   │   ├── profile/
+│   │   │   │   ├── publications/
+│   │   │   │   ├── register/
+│   │   │   │   ├── sidebar/
+│   │   │   │   ├── timeline/
+│   │   │   │   ├── user-edit/
+│   │   │   │   └── users/
+│   │   │   ├── models/
+│   │   │   ├── pipes/
+│   │   │   └── services/
+│   │   ├── assets/
+│   │   ├── index.html
 │   │   └── ...
-│   ├── assets/
+│   ├── angular.json
+│   ├── package.json
 │   └── ...
-├── angular.json
-├── package.json
-└── ...
+└── README.md
 ```
 
 ---
@@ -57,18 +80,20 @@ client/
 
 ## 📸 Capturas
 
-## 📸 Capturas
 
-<div align="center">
-	<img src="src/assets/Inicio.png" alt="Pantalla de inicio" width="400" style="border-radius: 12px; box-shadow: 0 4px 18px #0002; margin: 12px;">
-	<img src="src/assets/TimeLine.png" alt="Timeline" width="400" style="border-radius: 12px; box-shadow: 0 4px 18px #0002; margin: 12px;">
-	<img src="src/assets/Useprofile.png" alt="Perfil de usuario" width="400" style="border-radius: 12px; box-shadow: 0 4px 18px #0002; margin: 12px;">
-	<img src="src/assets/Gente.png" alt="Usuarios" width="400" style="border-radius: 12px; box-shadow: 0 4px 18px #0002; margin: 12px;">
-</div>
+![Pantalla de inicio](client/src/assets/Inicio.png)
+![Usuarios](client/src/assets/Gente.png)
+![Timeline](client/src/assets/TimeLine.png)
+![Perfil de usuario](client/src/assets/Useprofile.png)
 
 ---
 
 ## 🪄 Experiencia de usuario avanzada
+
+- **Pantalla de inicio:** Actualmente en construcción, será el punto de entrada principal a la red social.
+- **Usuarios:** Visualiza todos los usuarios dados de alta y accede a sus perfiles haciendo clic sobre ellos.
+- **Timeline:** Explora las publicaciones de todos los usuarios, amplía imágenes con un solo clic, borra tus propias publicaciones mediante un modal animado y navega fácilmente por los posts.
+- **Perfil de usuario:** Consulta exclusivamente las publicaciones y estadísticas de cada usuario, como número de seguidores, seguidos y publicaciones.
 
 - **Animaciones profesionales:** Transiciones suaves en modales, alertas y botones para una experiencia moderna y fluida.
 - **Modal de borrado personalizado:** Al eliminar una publicación, aparece un modal elegante con animación y confirmación.
