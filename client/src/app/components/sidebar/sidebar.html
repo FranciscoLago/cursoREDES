@@ -29,16 +29,24 @@
         @if (stats) {
         <div class="sidebar-stats">
             <div class="sidebar-stat">
-                <span class="sidebar-stat-label">Siguiendo</span>
-                <span class="sidebar-stat-number">{{stats.following}}</span>
+                <a [routerLink]="['/following', identity._id, 1]" class="user-link">
+                    <span class="sidebar-stat-label">Siguiendo</span>
+                    <span class="sidebar-stat-number">{{stats.following}}</span>
+                </a>
+
             </div>
             <div class="sidebar-stat">
-                <span class="sidebar-stat-label">Seguidores</span>
-                <span class="sidebar-stat-number">{{stats.followed}}</span>
+                <a [routerLink]="['/followed', identity._id, 1]" class="user-link">
+                    <span class="sidebar-stat-label">Seguidores</span>
+                    <span class="sidebar-stat-number">{{stats.followed}}</span>
+                </a>
             </div>
+
             <div class="sidebar-stat">
-                <span class="sidebar-stat-label">Publicaciones</span>
-                <span class="sidebar-stat-number">{{stats.publications}}</span>
+                <a [routerLink]="['/perfil', identity._id]" class="user-link">
+                    <span class="sidebar-stat-label">Publicaciones</span>
+                    <span class="sidebar-stat-number">{{stats.publications}}</span>
+                </a>
             </div>
         </div>
         }

@@ -7,6 +7,8 @@ import { UserEdit } from './components/user-edit/user-edit';
 import { UsersComponent } from './components/users/users';
 import { TimelineComponent } from './components/timeline/timeline';
 import { ProfileComponent } from './components/profile/profile';
+import { FollowingComponent } from './components/following/following';
+import { FollowedComponent } from './components/followed/followed';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -18,5 +20,7 @@ export const routes: Routes = [
   { path: 'gente/:page', component: UsersComponent },
   { path: 'timeline', component: TimelineComponent },
   { path: 'perfil/:id', component: ProfileComponent },
+  { path: 'following/:id/:page', component: FollowingComponent },
+  { path: 'followed/:id/:page', component: FollowedComponent },
   { path: '**', component: Home }
 ];

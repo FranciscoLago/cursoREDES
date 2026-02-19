@@ -25,4 +25,27 @@ export class FollowService {
 
         return this._http.delete(this.url + 'unfollow/' + id, { headers: headers });
     }
+
+    getFollowing(token: string, userId: string | null, page: number = 1): Observable<any> {
+        let headers = new HttpHeaders().set('Content-Type', 'application/json')
+            .set('Authorization', token);
+
+
+        var url = this.url + 'following/' + userId + '/' + page;
+        if (userId != null) {
+            url = this.url + 'following/' + userId + '/' + page;
+        }
+        return this._http.get(url, { headers: headers });
+    }
+    getFollowed(token: string, userId: string | null, page: number = 1): Observable<any> {
+        let headers = new HttpHeaders().set('Content-Type', 'application/json')
+            .set('Authorization', token);
+
+
+        var url = this.url + 'followed/' + userId + '/' + page;
+        if (userId != null) {
+            url = this.url + 'followed/' + userId + '/' + page;
+        }
+        return this._http.get(url, { headers: headers });
+    }
 }

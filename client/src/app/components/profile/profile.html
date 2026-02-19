@@ -20,12 +20,17 @@
                 @if (stats) {
                 <div class="profile-stats">
                     <div class="profile-stat">
-                        <span class="profile-stat-number">{{stats.following}}</span>
-                        <span class="profile-stat-label">Siguiendo</span>
+                        <a class="user-link" [routerLink]="['/following', user._id, 1]">
+                            <span class="profile-stat-number">{{stats.following}}</span>
+                            <span class="profile-stat-label">Siguiendo</span>
+                        </a>
+
                     </div>
                     <div class="profile-stat">
-                        <span class="profile-stat-number">{{stats.followed}}</span>
-                        <span class="profile-stat-label">Seguidores</span>
+                        <a class="user-link" [routerLink]="['/followed', user._id, 1]">
+                            <span class="profile-stat-number">{{stats.followed}}</span>
+                            <span class="profile-stat-label">Seguidores</span>
+                        </a>
                     </div>
                     <div class="profile-stat">
                         <span class="profile-stat-number">{{stats.publications}}</span>

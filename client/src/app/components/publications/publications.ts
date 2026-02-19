@@ -65,10 +65,8 @@ export class PublicationsComponent implements OnInit {
         if (!adding) {
             this.noMore = false;
         }
-        // ...existing code...
-        // Si el input 'user' es el id del usuario logueado, mostrar timeline
-        if (this.user && this.user !== "" && this.user !== this.identity._id) {
-            // Perfil: publicaciones del usuario visitado
+        // Si hay un input 'user', mostrar solo sus publicaciones (incluido el usuario logeado)
+        if (this.user && this.user !== "") {
             this._publicationService.getPublicationsUser(this.token!, this.user, page).subscribe({
                 next: (response) => {
                     this.handleResponse(response, page, adding);
@@ -191,6 +189,10 @@ export class PublicationsComponent implements OnInit {
             next: (response) => {
                 this.refresh(null);
                 this.closeDeleteModal();
+                this.status = "delete-success";
+                setTimeout(() => {
+                    this.status = "";
+                }, 2500);
             },
             error: (error) => {
                 console.error("Error deleting publication:", error);

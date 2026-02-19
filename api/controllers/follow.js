@@ -47,7 +47,7 @@ function getFollowingUsers(req, res) {
     var page = parseInt(req.params.page, 10) || 1;
     if (page < 1) page = 1;
 
-    var itemsPerPage = 4;
+    var itemsPerPage = 6;
 
     Promise.all([
         Follow.find({ user: userId })
@@ -58,17 +58,61 @@ function getFollowingUsers(req, res) {
         Follow.countDocuments({ user: userId }).exec()
     ])
         .then(([follows, total]) => {
+            // console.log('DEBUG follows:', follows);
             if (!follows || follows.length === 0) {
                 return res.status(404).send({ message: 'No estas siguiendo a ningun usuario' });
             }
 
-            return res.status(200).send({
-                total: total,
-                pages: Math.ceil(total / itemsPerPage),
-                follows: follows
+            followUserIds(req.user.sub).then((value) => {
+                return res.status(200).send({
+                    total: total,
+                    pages: Math.ceil(total / itemsPerPage),
+                    follows: follows,
+                    users_following: value.following,
+                    users_follow_me: value.followed
+                });
             });
         })
-        .catch(() => res.status(500).send({ message: 'Error en el servidor' }));
+        .catch((err) => {
+            console.error('DEBUG error:', err);
+            res.status(500).send({ message: 'Error en el servidor' });
+        });
+}
+
+async function followUserIds(user_id) {
+    var following = await Follow.find({ "user": user_id }).select({ '_id': 0, '__v': 0, 'user': 0 }).exec()
+        .then((follows) => {
+            return follows;
+
+        })
+        .catch(() => { return handleError(err) });
+
+    var followed = await Follow.find({ "followed": user_id }).select({ '_id': 0, '__v': 0, 'followed': 0 }).exec()
+        .then((follows) => {
+            return follows;
+        })
+        .catch(() => { return handleError(err) });
+
+    //----------------------- procesar following ids
+
+    var following_clean = [];
+
+    following.forEach((follow) => {
+        following_clean.push(follow.followed);
+    });
+
+    //----------------------- procesar followed ids
+
+    var followed_clean = [];
+
+    followed.forEach((follow) => {
+        followed_clean.push(follow.user);
+    });
+
+    return {
+        following: following_clean,
+        followed: followed_clean
+    };
 }
 
 function getFollowedUsers(req, res) {
@@ -81,7 +125,7 @@ function getFollowedUsers(req, res) {
     var page = parseInt(req.params.page, 10) || 1;
     if (page < 1) page = 1;
 
-    var itemsPerPage = 4;
+    var itemsPerPage = 6;
 
     Promise.all([
         Follow.find({ followed: userId })
@@ -96,10 +140,14 @@ function getFollowedUsers(req, res) {
                 return res.status(404).send({ message: 'No te están siguiendo ningún usuario' });
             }
 
-            return res.status(200).send({
-                total: total,
-                pages: Math.ceil(total / itemsPerPage),
-                follows: follows
+            followUserIds(req.user.sub).then((value) => {
+                return res.status(200).send({
+                    total: total,
+                    pages: Math.ceil(total / itemsPerPage),
+                    follows: follows,
+                    users_following: value.following,
+                    users_follow_me: value.followed
+                });
             });
         })
         .catch(() => res.status(500).send({ message: 'Error en el servidor' }));
@@ -124,6 +172,8 @@ function getMyFollows(req, res) {
         })
         .catch(() => res.status(500).send({ message: 'Error en el servidor' }));
 }
+
+
 
 function getFollowBacks(req, res) {
     var userId = req.user.sub;

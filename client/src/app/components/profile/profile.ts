@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { User } from "../../models/user";
 import { Follow } from "../../models/follow";
 import { UserService } from "../../services/user.service";
@@ -12,7 +12,7 @@ import { PublicationsComponent } from "../publications/publications";
     selector: "profile",
     templateUrl: "./profile.html",
     standalone: true,
-    imports: [Sidebar, PublicationsComponent],
+    imports: [Sidebar, PublicationsComponent, RouterLink],
     providers: [UserService, FollowService]
 })
 export class ProfileComponent implements OnInit {

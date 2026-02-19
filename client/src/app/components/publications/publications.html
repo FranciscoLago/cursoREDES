@@ -1,7 +1,14 @@
 <div class="publications">
+
     @if (status === 'error') {
     <div class="form-alert form-alert-error">
         No se pudieron cargar las publicaciones. Intentalo de nuevo.
+    </div>
+    }
+
+    @if (status === 'delete-success') {
+    <div class="form-alert form-alert-success">
+        Publicación eliminada correctamente.
     </div>
     }
 
