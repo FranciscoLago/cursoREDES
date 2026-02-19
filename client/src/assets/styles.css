@@ -934,6 +934,7 @@ body {
     display: grid;
     place-items: center;
     font-weight: 700;
+    font-size: 1.1rem;
     color: var(--brand);
     letter-spacing: 1px;
     background: linear-gradient(160deg, #f9e2d3 0%, #fff2ea 100%);
@@ -1438,3 +1439,61 @@ body {
     display: grid;
     place-items: center;
 }
+
+/* --- MENÚ LATERAL MENSAJES (ESTILO PERSONALIZADO Y ÚNICO) --- */
+.messages-sidebar {
+    width: 220px;
+    background: linear-gradient(135deg, #fbeee6 0%, #f7e9da 100%);
+    padding: 20px 0;
+    border-right: 1.5px solid rgba(208, 90, 58, 0.08);
+    /* borde sutil y cálido */
+    min-height: 100vh;
+    box-shadow: 2px 0 8px rgba(47, 15, 31, 0.04);
+}
+
+.messages-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.messages-sidebar li {
+    margin-bottom: 10px;
+}
+
+.messages-sidebar a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--brand, #7c4d2b);
+    text-decoration: none;
+    border-radius: 8px 0 0 8px;
+    font-weight: 500;
+    font-family: 'Space Grotesk', 'Newsreader', sans-serif;
+    letter-spacing: 0.2px;
+    background: transparent;
+    transition: background 0.18s, color 0.18s;
+}
+
+.messages-sidebar li.active a,
+.messages-sidebar a:hover {
+    background: linear-gradient(90deg, #fbeee6 60%, rgba(208, 90, 58, 0.13) 100%);
+    color: var(--accent, #d05a3a) !important;
+    font-weight: 700;
+    box-shadow: 2px 2px 8px rgba(208, 90, 58, 0.06);
+    transition: background 0.18s, color 0.18s;
+}
+
+.content {
+    flex: 1;
+    padding: 30px;
+    background: linear-gradient(to bottom var(--paper-2) 0%, var(--paper) 100%);
+    min-height: 100vh;
+}
+
+.messages-container {
+    display: flex;
+    min-height: 100vh;
+    background: none;
+}
+
+/* --- FIN MENÚ LATERAL MENSAJES (ESTILO PERSONALIZADO Y ÚNICO) --- */

@@ -156,18 +156,13 @@ function getFollowedUsers(req, res) {
 // Devolver listados de usuarios
 function getMyFollows(req, res) {
     var userId = req.user.sub;
-    var find = Follow.find({ user: userId });
-
-    if (req.params.followed) {
-        find = Follow.find({ followed: userId });
-    }
-
-    find.populate('followed').exec()
+    Follow.find({ user: userId })
+        .populate('followed')
+        .exec()
         .then((follows) => {
             if (!follows || follows.length === 0) {
                 return res.status(404).send({ message: 'No sigues a ningun usuario' });
             }
-
             return res.status(200).send({ follows });
         })
         .catch(() => res.status(500).send({ message: 'Error en el servidor' }));

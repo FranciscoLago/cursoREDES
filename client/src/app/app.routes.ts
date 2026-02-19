@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { MessagesRoutes } from './messages/messages.routes';
 
 import { Register } from './components/register/register';
 import { Login } from './components/login/login';
@@ -9,6 +10,7 @@ import { TimelineComponent } from './components/timeline/timeline';
 import { ProfileComponent } from './components/profile/profile';
 import { FollowingComponent } from './components/following/following';
 import { FollowedComponent } from './components/followed/followed';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -22,5 +24,6 @@ export const routes: Routes = [
   { path: 'perfil/:id', component: ProfileComponent },
   { path: 'following/:id/:page', component: FollowingComponent },
   { path: 'followed/:id/:page', component: FollowedComponent },
+  { path: 'messages', children: MessagesRoutes },
   { path: '**', component: Home }
 ];

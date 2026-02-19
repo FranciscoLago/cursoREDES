@@ -48,4 +48,11 @@ export class FollowService {
         }
         return this._http.get(url, { headers: headers });
     }
+
+    getMyFollows(token: string): Observable<any> {
+        let headers = new HttpHeaders().set('Content-Type', 'application/json')
+            .set('Authorization', token);
+        // El backend espera '/get-my-follows/:followed', y 'true' para los que sigue el usuario autenticado
+        return this._http.get(this.url + 'get-my-follows/false', { headers: headers });
+    }
 }
