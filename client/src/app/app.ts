@@ -24,7 +24,7 @@ export class App implements OnInit, DoCheck {
     private _router: Router,
     private _userService: UserService,
   ) {
-    this.title = "NGSOCIAL";
+    this.title = "SocialLeik";
     this.hasIdentity = false;
     this.isUserMenuOpen = false;
     this.url = GLOBAL.url;

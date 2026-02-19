@@ -8,7 +8,7 @@ export class Home implements OnInit {
     public title: string;
 
     constructor() {
-        this.title = "Bienvenido a NGSOCIAL";
+        this.title = "Bienvenido a SocialLeik";
     }
 
     ngOnInit(): void {
