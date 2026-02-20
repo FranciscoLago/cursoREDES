@@ -4,6 +4,22 @@ Bienvenido al cliente de SocialApp, una red social moderna construida con Angula
 
 ---
 
+## 🆕 Novedades y mejoras recientes
+
+- 🔒 **Protección de rutas con UserGuard:** Ahora las rutas sensibles están protegidas mediante un guard personalizado, asegurando que solo usuarios autenticados y con rol adecuado puedan acceder a secciones privadas.
+- 🛡️ **Gestión avanzada de roles:** Acceso diferenciado para usuarios y administradores.
+- 🧑‍💼 **Gestión de sesión robusta:** El guard verifica la identidad y el rol antes de permitir el acceso.
+- 🧭 **Redirección automática:** Si no tienes permisos, serás redirigido a la pantalla de login.
+- 🧩 **Arquitectura modular:** Separación clara de componentes, servicios y rutas para facilitar el mantenimiento y la escalabilidad.
+- 🎨 **Estilo mejorado:** Interfaz moderna, responsive, con animaciones suaves y feedback visual en todas las acciones.
+- 📦 **Código organizado:** Uso de modelos, pipes personalizados y servicios reutilizables.
+- 📨 **Sistema de mensajería:** Incluye rutas y componentes para enviar, recibir y gestionar mensajes entre usuarios.
+- 🧑‍🤝‍🧑 **Sistema de seguidores/seguidos:** Visualiza y gestiona tus relaciones sociales fácilmente.
+- 🖼️ **Carga y previsualización de imágenes:** Sube imágenes en publicaciones y perfiles, con vista previa instantánea.
+- 🕒 **Pipe personalizado "time-ago":** Muestra fechas relativas de forma amigable (ej: "hace 2 minutos").
+
+---
+
 ## ✨ Características principales
 
 - 📝 Publica textos y fotos
@@ -12,6 +28,14 @@ Bienvenido al cliente de SocialApp, una red social moderna construida con Angula
 - 👤 Perfil de usuario con estadísticas
 - 🔒 Autenticación y gestión de usuarios
 - 📱 Responsive y diseño atractivo
+
+---
+
+## 🔒 Seguridad y control de acceso
+
+- **UserGuard:** Implementado para proteger rutas privadas como "mis-datos" y otras secciones sensibles.
+- **Verificación de rol:** Solo usuarios con roles válidos pueden acceder a ciertas funcionalidades.
+- **Redirección segura:** Si no tienes permisos, la app te lleva automáticamente al login.
 
 ---
 
@@ -76,6 +100,9 @@ CursoREDES/
 - Botones redondeados y feedback visual
 - Mensajes de éxito/error con iconos y colores
 
+- Diseño responsive para móviles y escritorio
+- Interfaz coherente y profesional en todos los módulos
+
 ---
 
 ## 📸 Capturas
@@ -94,6 +121,11 @@ CursoREDES/
 - **Usuarios:** Visualiza todos los usuarios dados de alta y accede a sus perfiles haciendo clic sobre ellos.
 - **Timeline:** Explora las publicaciones de todos los usuarios, amplía imágenes con un solo clic, borra tus propias publicaciones mediante un modal animado y navega fácilmente por los posts.
 - **Perfil de usuario:** Consulta exclusivamente las publicaciones y estadísticas de cada usuario, como número de seguidores, seguidos y publicaciones.
+
+- **Protección de rutas:** Acceso restringido a secciones privadas mediante UserGuard.
+- **Gestión de mensajes:** Envía, recibe y visualiza mensajes entre usuarios desde una interfaz intuitiva.
+- **Gestión de seguidores/seguidos:** Consulta y administra tus relaciones sociales desde los perfiles.
+- **Pipe time-ago:** Fechas relativas para una experiencia más humana.
 
 - **Animaciones profesionales:** Transiciones suaves en modales, alertas y botones para una experiencia moderna y fluida.
 - **Modal de borrado personalizado:** Al eliminar una publicación, aparece un modal elegante con animación y confirmación.
