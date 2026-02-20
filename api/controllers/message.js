@@ -44,7 +44,7 @@ function getReceivedMessages(req, res) {
 
     Promise.all([
         Message.find({ receiver: userId })
-            .populate('emitter', 'name surname _id')
+            .populate('emitter receiver', 'name surname _id nick image')
             .skip((page - 1) * itemsPerPage)
             .limit(itemsPerPage)
             .sort('-created_at')
@@ -76,7 +76,7 @@ function getEmmitMessages(req, res) {
 
     Promise.all([
         Message.find({ emitter: userId })
-            .populate('emitter receiver', 'name surname _id')
+            .populate('emitter receiver', 'name surname _id nick image')
             .skip((page - 1) * itemsPerPage)
             .limit(itemsPerPage)
             .sort('-created_at')

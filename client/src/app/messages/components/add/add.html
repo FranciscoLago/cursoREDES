@@ -1,44 +1,65 @@
-<div class="col-lg-10">
-    <h3>{{title}}</h3>
-
-    @if (status === 'success') {
-    <div class="form-alert form-alert-success">
-        Has enviado el mensaje correctamente <a [routerLink]="['messages/sent']">Ver mensajes </a>
+<div style="display: flex; gap: 24px; align-items: flex-start;">
+    <div style="min-width: 220px;">
+        <app-sidebar-menu></app-sidebar-menu>
     </div>
-    }
+    <div style="flex: 1;">
+        <h3>{{title}}</h3>
 
-    @if (status === 'error') {
-    <div class="form-alert form-alert-error">
-        Error en el envío del mensaje, inténtalo de nuevo
-    </div>
-    }
+        @if (status === 'success') {
+        <div class="form-alert form-alert-success">
+            <span class="success-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="12" fill="#4caf50" opacity="0.15" />
+                    <path d="M8.5 12.5L11 15L16 10" stroke="#4caf50" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </span>
+            <div style="flex:1;">
+                <div class="success-title">¡Mensaje enviado correctamente!</div>
+                <div>
+                    Puedes ver tus mensajes enviados aquí:
+                    <a routerLinkActive="active" [routerLink]="['/messages/sent']" class="success-link">Ver mensajes</a>
+                </div>
+            </div>
+        </div>
+        }
 
-    <form #formAdd="ngForm" (ngSubmit)="onSubmit(formAdd)">
-        <p>
-            <label>Para:</label>
-            <!-- LISTADO SEGUIDORES-->
-            @if (follows && follows.length > 0) {
-            <select name="receiver" #receiver="ngModel" [(ngModel)]="message.receiver" class="form-control" required>
-                @for (follow of follows; track follow.followed._id) {
-                <option [value]="follow.followed._id">
-                    {{follow.followed.name + ' ' + follow.followed.surname + ' (@' + follow.followed.nick + ')' }}
-                </option>
+        @if (status === 'error') {
+        <div class="form-alert form-alert-error">
+            Error en el envío del mensaje, inténtalo de nuevo
+        </div>
+        }
+
+        <form #formAdd="ngForm" (ngSubmit)="onSubmit(formAdd)">
+            <p>
+                <label>Para:</label>
+                <!-- LISTADO SEGUIDORES-->
+                @if (follows === null) {
+                <span class="text-muted">Cargando seguidores...</span>
+                } @else if (follows.length > 0) {
+                <select name="receiver" #receiver="ngModel" [(ngModel)]="message.receiver" class="form-control"
+                    required>
+                    @for (follow of follows; track follow.followed._id) {
+                    <option [value]="follow.followed._id">
+                        {{follow.followed.name + ' ' + follow.followed.surname + ' (@' + follow.followed.nick + ')' }}
+                    </option>
+                    }
+                </select>
+                } @else {
+                <span class="text-muted">No sigues a nadie.</span>
                 }
-            </select>
-            } @else {
-            <span class="text-muted">No sigues a nadie.</span>
-            }
-        </p>
+            </p>
 
-        <p>
-            <label>Mensajes</label>
-            <textarea name="text" #text="ngModel" [(ngModel)]="message.text" class="form-control" required></textarea>
-            @if (!text.valid && text.touched) {
-            <span class="text-danger">El mensaje es requerido</span>
-            }
-        </p>
+            <p>
+                <label>Mensajes</label>
+                <textarea name="text" #text="ngModel" [(ngModel)]="message.text" class="form-control"
+                    required></textarea>
+                @if (!text.valid && text.touched) {
+                <span class="text-danger">El mensaje es requerido</span>
+                }
+            </p>
 
-        <input type="submit" value="{{title}}">
-    </form>
-
+            <input type="submit" value="{{title}}">
+        </form>
+    </div>
 </div>

@@ -9,14 +9,16 @@ import { User } from '../../../models/user';
 import { UserService } from '../../../services/user.service';
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from '@angular/router';
+import { SidebarMenuComponent } from '../../../components/sidebar/sidebar-menu';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 
 @Component({
     selector: 'add',
     templateUrl: './add.html',
-    providers: [FollowService, MessageService],
-    imports: [FormsModule, RouterModule]
+    providers: [FollowService, MessageService, UserService,],
+    imports: [FormsModule, RouterModule, SidebarMenuComponent]
 })
 export class AddComponent implements OnInit {
     public title: string;
@@ -32,20 +34,22 @@ export class AddComponent implements OnInit {
         private _router: Router,
         private _followService: FollowService,
         private _messageService: MessageService,
-        private _userService: UserService
+        private _userService: UserService,
+        private cdr: ChangeDetectorRef
     ) {
         this.title = 'Enviar mensaje';
         this.identity = this._userService.getIdentity();
         this.token = this._userService.getToken();
         this.url = GLOBAL.url;
         this.status = '';
-        this.follows = false;
-        this.message = new Message('', '', false, '', this.identity._id, '');
+        this.follows = null;
+        this.message = new Message('', '', false, '', this.identity._id, this._userService.getIdentity()._id);
     }
 
     ngOnInit(): void {
         console.log('Add component loaded');
         this.getMyFollows();
+        this.cdr.detectChanges(); // Forzar la detección de cambios después de cargar los seguidores
     }
 
     onSubmit(form: any): void {
@@ -74,6 +78,7 @@ export class AddComponent implements OnInit {
         this._followService.getMyFollows(this.token).subscribe({
             next: (response) => {
                 this.follows = response.follows;
+                this.cdr.detectChanges(); // Forzar la detección de cambios después de cargar los seguidoresº
             },
             error: (error) => {
                 console.error(<any>error);

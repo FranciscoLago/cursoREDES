@@ -1,5 +1,48 @@
-<div class="col-lg-10">
-    <h3>{{title}}</h3>
-
-    <!--listado de mensajes enviados-->
+<div class="messages-container">
+    <app-sidebar-menu></app-sidebar-menu>
+    <div class="content">
+        <h3>{{title}}</h3>
+        <div class="messages-list">
+            @if (messages && messages.length > 0) {
+            @for (msg of messages; track msg._id) {
+            <div class="message-card">
+                <div class="message-header">
+                    <div class="emitter-avatar">
+                        @if (msg.emitter.image) {
+                        <img src="{{url + 'get-image-user/' + msg.emitter.image}}" alt="avatar" />
+                        }
+                        @if (!msg.emitter.image) {
+                        <div class="avatar-fallback">
+                            {{msg.emitter.name.charAt(0)}}{{msg.emitter.surname.charAt(0)}}
+                        </div>
+                        }
+                    </div>
+                    <div>
+                        <label>Enviado a: </label>
+                        <a [routerLink]="['/perfil', msg.receiver._id]" class="receiver-name">
+                            {{ msg.receiver.name}} {{msg.receiver.surname}}
+                            (@{{msg.receiver.nick}})
+                        </a>
+                        <div class="message-date">{{msg.created_at | timeAgo}}</div>
+                    </div>
+                </div>
+                <div class="message-body">
+                    {{msg.text}}
+                </div>
+            </div>
+            }
+            } @else {
+            <div class="text-muted">No has enviado mensajes.</div>
+            }
+        </div>
+        <div class="home-actions">
+            @if (page > 1) {
+            <a class="home-btn" [routerLink]="['/messages/sent', page - 1]">Anterior</a>
+            }
+            @if (page < pages) { <a class="home-btn home-btn-primary" [routerLink]="['/messages/sent', page + 1]">
+                Siguiente</a>
+                }
+        </div>
+        <p class="people-stats">Total: {{total}} mensajes · Pagina {{page}} de {{pages}}</p>
+    </div>
 </div>

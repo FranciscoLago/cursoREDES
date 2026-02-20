@@ -10,6 +10,7 @@ import { TimelineComponent } from './components/timeline/timeline';
 import { ProfileComponent } from './components/profile/profile';
 import { FollowingComponent } from './components/following/following';
 import { FollowedComponent } from './components/followed/followed';
+import { UserGuard } from './services/user.guard';
 
 
 export const routes: Routes = [
@@ -17,13 +18,13 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'home', component: Home },
-  { path: 'mis-datos', component: UserEdit },
+  { path: 'mis-datos', component: UserEdit, canActivate: [UserGuard] },
   { path: 'gente', redirectTo: 'gente/1', pathMatch: 'full' },
-  { path: 'gente/:page', component: UsersComponent },
-  { path: 'timeline', component: TimelineComponent },
-  { path: 'perfil/:id', component: ProfileComponent },
-  { path: 'following/:id/:page', component: FollowingComponent },
-  { path: 'followed/:id/:page', component: FollowedComponent },
-  { path: 'messages', children: MessagesRoutes },
+  { path: 'gente/:page', component: UsersComponent, canActivate: [UserGuard] },
+  { path: 'timeline', component: TimelineComponent, canActivate: [UserGuard] },
+  { path: 'perfil/:id', component: ProfileComponent, canActivate: [UserGuard] },
+  { path: 'following/:id/:page', component: FollowingComponent, canActivate: [UserGuard] },
+  { path: 'followed/:id/:page', component: FollowedComponent, canActivate: [UserGuard] },
+  { path: 'messages', children: MessagesRoutes, canActivate: [UserGuard] },
   { path: '**', component: Home }
 ];
