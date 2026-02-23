@@ -21,20 +21,22 @@
                 <div class="profile-stats">
                     <div class="profile-stat">
                         <a class="user-link" [routerLink]="['/following', user._id, 1]">
-                            <span class="profile-stat-number">{{stats.following}}</span>
                             <span class="profile-stat-label">Siguiendo</span>
                         </a>
+                        <span class="profile-stat-number">{{stats.following}}</span>
 
                     </div>
                     <div class="profile-stat">
                         <a class="user-link" [routerLink]="['/followed', user._id, 1]">
-                            <span class="profile-stat-number">{{stats.followed}}</span>
                             <span class="profile-stat-label">Seguidores</span>
                         </a>
+                        <span class="profile-stat-number">{{stats.followed}}</span>
                     </div>
                     <div class="profile-stat">
+                        <a class="user-link" [routerLink]="['/perfil', user._id, 1]">
+                            <span class="profile-stat-label">Publicaciones</span>
+                        </a>
                         <span class="profile-stat-number">{{stats.publications}}</span>
-                        <span class="profile-stat-label">Publicaciones</span>
                     </div>
                 </div>
                 }
