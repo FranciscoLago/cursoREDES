@@ -1,6 +1,6 @@
-# 🚀 SocialApp - Cliente Angular
+# 🚀 SocialLeik - Cliente Angular
 
-Bienvenido al cliente de SocialApp, una red social moderna construida con Angular.
+Bienvenido al cliente de SocialLeik, una red social moderna construida con Angular.
 
 ---
 

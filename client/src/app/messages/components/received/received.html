@@ -18,9 +18,9 @@
                         }
                     </div>
                     <div>
-                        <a [routerLink]="['/perfil', msg.receiver._id]" class="receiver-name">
-                            {{ msg.receiver.name}} {{msg.receiver.surname}}
-                            (@{{msg.receiver.nick}})
+                        <a [routerLink]="['/perfil', msg.emitter._id]" class="receiver-name">
+                            {{ msg.emitter.name}} {{msg.emitter.surname}}
+                            (@{{msg.emitter.nick}})
                         </a>
                         <div class="message-date">{{msg.created_at | timeAgo}}</div>
                     </div>
