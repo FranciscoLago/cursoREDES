@@ -147,5 +147,3 @@ Todo el diseño y las interacciones están pensados para ser intuitivos y agrada
 MIT
 
 ---
-
-> Hecho con ❤️ por tu equipo SocialApp
